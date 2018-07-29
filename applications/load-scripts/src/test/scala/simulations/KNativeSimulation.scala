@@ -19,7 +19,7 @@ class KNativeSimulation extends Simulation {
   val headers = Map("Accept" -> "application/json", "Content-Type" -> "application/json")
   val headersWithHost = if (!hostHeader.equals("")) headers + ("Host" -> hostHeader) else headers
 
-  val messagesApiCall = repeat(30) {
+  val messagesApiCall = repeat(100) {
     exec(http("messages")
       .post("/messages")
       .headers(headersWithHost)
