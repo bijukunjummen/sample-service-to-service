@@ -1,0 +1,15 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: sample-boot-knative
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: bijukunjummen/sample-boot-knative-app:0.0.1-SNAPSHOT
+            env:
+            - name: ASAMPLE_ENV
+              value: "sample-env-val"

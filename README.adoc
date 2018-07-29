@@ -1,0 +1,41 @@
+# A sample demonstrating using [knative serving](https://github.com/knative/serving) for a
+[Spring Boot 2](https://spring.io/projects/spring-boot) app deployment
+
+
+= Running it locally
+
+[source, bash]
+----
+./gradlew -p applications/sample-boot-knative-app clean bootRun
+----
+
+= Testing
+Assuming that https://httpie.org/[httpie] is installed
+
+[source, bash]
+----
+http POST 'http://localhost:8080/messages' id="1" payload="one"   delay="1000"
+----
+
+OR with CURL
+
+[source, bash]
+----
+curl -X "POST" "http://localhost:8080/messages" \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d $'{
+  "id": "1",
+  "payload": "one",
+  "delay": "1000"
+}'
+----
+
+= Generating load
+
+A gatling based load can be sent to the app using:  
+[source, bash]
+----
+./gradlew -p applications/load-scripts  -DTARGET_URL=http://localhost:8080 knativeLoad
+----
+
