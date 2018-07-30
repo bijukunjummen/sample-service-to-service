@@ -1,6 +1,6 @@
 # Spring Boot app on Knative serving
 
-A sample demonstrating using [knative serving](https://github.com/knative/serving) for a [Spring Boot 2](https://spring.io/projects/spring-boot) app deployment
+A sample demonstrating using https://github.com/knative/serving[knative serving] for a https://spring.io/projects/spring-boot[Spring Boot 2] app deployment
 
 
 = Running it locally
