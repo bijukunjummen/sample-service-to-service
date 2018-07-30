@@ -45,7 +45,7 @@ A gatling based load can be sent to the app using:
 
 = Deploying to Kubernetes using Knative serving
 
-* Install Knative using the instructions [here](https://github.com/knative/docs/blob/master/install/README.md)
+* Install Knative using the instructions https://github.com/knative/docs/blob/master/install/README.md[here]
 * Run the following commands
 
 [source, bash]
