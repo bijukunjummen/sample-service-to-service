@@ -5,12 +5,14 @@ A sample demonstrating using [knative serving](https://github.com/knative/servin
 
 = Running it locally
 
+Start app using the following command:
+
 [source, bash]
 ----
 ./gradlew -p applications/sample-boot-knative-app clean bootRun
 ----
 
-= Testing
+== Testing
 Assuming that https://httpie.org/[httpie] is installed
 
 [source, bash]
@@ -32,7 +34,7 @@ curl -X "POST" "http://localhost:8080/messages" \
 }'
 ----
 
-= Generating load
+== Generating load
 
 A gatling based load can be sent to the app using:  
 [source, bash]
@@ -51,4 +53,36 @@ A gatling based load can be sent to the app using:
 cd knative
 kubectl apply -f service.yml
 ----
+
+== Testing
+
+[source, bash]
+----
+export GATEWAY_URL=$(echo $(minikube ip):$(kubectl get svc knative-ingressgateway -n istio-system -o 'jsonpath={.spec.ports[?(@.port==80)].nodePort}'))
+export APP_DOMAIN=$(kubectl get services.serving.knative.dev sample-boot-knative-service  -o="jsonpath={.status.domain}")
+----
+
+With Httpie:
+
+[source, bash]
+----
+http http://${GATEWAY_URL}/messages Host:"${APP_DOMAIN}" id=1 payload=test delay=100
+----
+
+Or with Curl:
+
+[source, bash]
+----
+curl -X "POST" "http://${GATEWAY_URL}/messages" \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -H "Host: ${APP_DOMAIN}" \
+     -d $'{
+  "id": "1",
+  "payload": "one",
+  "delay": "1000"
+}'
+----
+
+
 
