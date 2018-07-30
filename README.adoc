@@ -80,7 +80,7 @@ curl -X "POST" "http://${GATEWAY_URL}/messages" \
      -d $'{
   "id": "1",
   "payload": "one",
-  "delay": "1000"
+  "delay": "300"
 }'
 ----
 
