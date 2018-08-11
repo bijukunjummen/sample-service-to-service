@@ -1,7 +1,7 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.41'
-        springBootVersion = '2.0.3.RELEASE'
+        kotlinVersion = '1.2.60'
+        springBootVersion = '2.0.4.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -32,7 +32,7 @@ apply plugin: 'io.spring.dependency-management'
 
 
 group = 'org.bk.samples'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.3-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
@@ -88,6 +88,6 @@ dependencyManagement {
 
 jib {
     to {
-        image = "bijukunjummen/sample-boot-knative-app:0.0.1-SNAPSHOT"
+        image = "bijukunjummen/sample-boot-knative-app:${project.version}"
     }
 }

@@ -9,7 +9,7 @@ spec:
       revisionTemplate:
         spec:
           container:
-            image: bijukunjummen/sample-boot-knative-app:0.0.1-SNAPSHOT
+            image: bijukunjummen/sample-boot-knative-app:0.0.3-SNAPSHOT
             env:
             - name: ASAMPLE_ENV
               value: "sample-env-val"
