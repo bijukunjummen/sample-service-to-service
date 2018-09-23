@@ -8,7 +8,7 @@ metadata:
       ---
       apiVersion: ambassador/v0
       kind:  Mapping
-      name: sample-client-app 
+      name: sample-boot-knative-app
       prefix: /messages
       rewrite: /messages
       service: knative-ingressgateway.istio-system.svc.cluster.local 
