@@ -1,2 +1,1 @@
 include 'applications:sample-boot-knative-app'
-include 'applications:load-scripts'
