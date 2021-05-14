@@ -19,9 +19,9 @@ class RoutesConfig {
     @Bean
     fun apis(messageHandler: MessageHandler) = router {
         (accept(MediaType.APPLICATION_JSON) and "/messages").nest {
-            POST("/", messageHandler::handleMessage)
+            POST( messageHandler::handleMessage)
         }
-        GET("/", { ServerResponse.ok().syncBody(indexHtml) })
+        GET("/", { ServerResponse.ok().bodyValue(indexHtml) })
     }
 
 }
