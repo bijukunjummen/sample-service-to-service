@@ -66,18 +66,18 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
 };
 
 interface CallState {
-    payload: string;
-    delay: number;
-    formErrors: { payload: string, delay: string };
-    loading: boolean;
-    payloadValid: boolean;
-    delayValid: boolean;
-    formValid: boolean;
-    responseMessage?: MessageAck;
-    responseError: string;
+  payload: string;
+  delay: number;
+  formErrors: { payload: string, delay: string };
+  loading: boolean;
+  payloadValid: boolean;
+  delayValid: boolean;
+  formValid: boolean;
+  responseMessage?: MessageAck;
+  responseError: string;
 }
 
-export const MainForm = ({payload}: {payload: string}) => {
+export const MainForm = ({ payload }: { payload: string }) => {
   const [callState, setCallState] = useState<CallState>({
     payload: "dummy payload",
     delay: 100,
@@ -90,13 +90,13 @@ export const MainForm = ({payload}: {payload: string}) => {
     responseError: ""
   });
 
-  const handleFormSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (callState.loading) {
       e.preventDefault();
       return;
     }
-    setCallState(prevState => ({...prevState, responseError: "" }));
-    setCallState(prevState => ({...prevState, responseMessage: undefined }));
+    setCallState(prevState => ({ ...prevState, responseError: "" }));
+    setCallState(prevState => ({ ...prevState, responseMessage: undefined }));
 
     passthroughCallAndSetState(callState.payload, callState.delay);
     e.preventDefault()
@@ -119,7 +119,7 @@ export const MainForm = ({payload}: {payload: string}) => {
     validateField(name, value)
   }
 
-  const validateField = (fieldName:string, value: any) => {
+  const validateField = (fieldName: string, value: any) => {
     let fieldValidationErrors = callState.formErrors;
     let payloadValid = callState.payloadValid;
     let delayValid = callState.delayValid;
@@ -138,7 +138,7 @@ export const MainForm = ({payload}: {payload: string}) => {
     }
     setCallState(prevState => ({
       ...prevState,
-      [fieldName]:value,
+      [fieldName]: value,
       formErrors: fieldValidationErrors,
       payloadValid: payloadValid,
       delayValid: delayValid

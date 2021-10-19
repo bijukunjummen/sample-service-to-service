@@ -45,6 +45,10 @@
   },
   "proxy": "http://localhost:8080",
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.1"
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
+    "@types/react-router-dom": "^5.3.1",
+    "@types/react-test-renderer": "^17.0.1",
+    "react-test-renderer": "^17.0.2"
   }
 }
