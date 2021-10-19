@@ -1,0 +1,16 @@
+---
+server:
+  port: 8080
+
+logging:
+  level:
+    root: info
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,1 +1,3 @@
-include 'applications:sample-boot-knative-app'
+rootProject.name="sample-boot-knative"
+include 'sample-producer'
+include 'sample-caller'

@@ -1,0 +1,54 @@
+openapi: 3.0.1
+info:
+  title: Client to a service which injects faults and delays
+  description: |
+    Client to a service which injects faults and delays
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081
+tags:
+  - name: messages
+paths:
+  /messages:
+    post:
+      tags:
+        - messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+      responses:
+        200:
+          description: Message Acknowledgement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageAck'
+components:
+  schemas:
+    MessageRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          example: an-id
+        payload:
+          type: string
+        throwException:
+          type: boolean
+          default: false
+        delay:
+          type: integer
+          default: 0
+          description: delay in milliseconds
+
+    MessageAck:
+      type: object
+      properties:
+        id:
+          type: string
+        received:
+          type: string
+        ack:
+          type: string
