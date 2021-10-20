@@ -19,7 +19,10 @@ class RemoteMessageHandler(
 ) : MessageHandler {
     override fun handle(message: Message): Mono<MessageAck> {
         val webClient: WebClient = webClientBuilder.build()
-        val uri: URI = UriComponentsBuilder.fromHttpUrl("$remoteBaseUrl/messages").build().toUri()
+        val uri: URI = UriComponentsBuilder
+            .fromHttpUrl("$remoteBaseUrl/producer/messages")
+            .build()
+            .toUri()
         return webClient.post()
             .uri(uri)
             .accept(MediaType.APPLICATION_JSON)

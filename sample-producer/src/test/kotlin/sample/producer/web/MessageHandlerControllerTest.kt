@@ -19,7 +19,7 @@ class MessageHandlerControllerTest {
 
     @Test
     fun `call to message endpoint`() {
-        webTestClient.post().uri("/messages")
+        webTestClient.post().uri("/producer/messages")
             .body(fromValue(Message("1", "one", 0)))
             .exchange()
             .expectStatus().isOk
@@ -37,7 +37,7 @@ class MessageHandlerControllerTest {
 
     @Test
     fun `should throw an exception if the payload flag is set`() {
-        webTestClient.post().uri("/messages")
+        webTestClient.post().uri("/producer/messages")
             .body(fromValue(Message("1", "one", 150, true)))
             .exchange()
             .expectStatus().is5xxServerError

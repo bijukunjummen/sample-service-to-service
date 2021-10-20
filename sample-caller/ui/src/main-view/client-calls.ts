@@ -1,7 +1,7 @@
 import { MessageAck } from './MessageAck';
 
 export function makePassthroughCall(payload: string, delay: number): Promise<MessageAck> {
-    const url = "/messages"
+    const url = "/caller/messages"
     return fetch(url, {
         headers: { "Content-Type": "application/json" },
         method: "POST",

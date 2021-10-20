@@ -12,7 +12,7 @@ class RoutesConfig {
 
     @Bean
     fun apis(messageHandler: MessageHandler) = router {
-        (accept(MediaType.APPLICATION_JSON) and "/messages").nest {
+        (accept(MediaType.APPLICATION_JSON) and "/producer/messages").nest {
             POST(messageHandler::handleMessage)
         }
     }

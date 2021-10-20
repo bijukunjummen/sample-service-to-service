@@ -9,7 +9,7 @@ servers:
 tags:
   - name: messages
 paths:
-  /messages:
+  /producer/messages:
     post:
       tags:
         - messages
