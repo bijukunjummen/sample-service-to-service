@@ -14,21 +14,21 @@ import java.net.URI
 
 @Service
 class RemoteMessageHandler(
-    private val webClientBuilder: WebClient.Builder,
-    @Value("\${remote.base.url}") private val remoteBaseUrl: String
+        private val webClientBuilder: WebClient.Builder,
+        @Value("\${remote.base.url}") private val remoteBaseUrl: String
 ) : MessageHandler {
     override fun handle(message: Message): Mono<MessageAck> {
         val webClient: WebClient = webClientBuilder.build()
         val uri: URI = UriComponentsBuilder
-            .fromHttpUrl("$remoteBaseUrl/producer/messages")
-            .build()
-            .toUri()
+                .fromHttpUrl("$remoteBaseUrl/producer/messages")
+                .build()
+                .toUri()
         return webClient.post()
-            .uri(uri)
-            .accept(MediaType.APPLICATION_JSON)
-            .body(BodyInserters.fromValue(message))
-            .exchangeToMono { response ->
-                response.bodyToMono<MessageAck>()
-            }
+                .uri(uri)
+                .accept(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(message))
+                .exchangeToMono { response ->
+                    response.bodyToMono<MessageAck>()
+                }
     }
 }

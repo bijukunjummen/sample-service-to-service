@@ -7,7 +7,7 @@ const Root = () => (
   <Router>
     <div>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <Link to="/" className="navbar-brand">Sample KNative Client</Link>
+        <Link to="/" className="navbar-brand">Service To Service Call Client</Link>
         <button className="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#navbarsExampleDefault"
                 aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">

@@ -4,7 +4,7 @@ server:
 
 logging:
   level:
-    root: info
+    root: debug
 
 management:
   endpoint:

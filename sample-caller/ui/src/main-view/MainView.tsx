@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as restCalls from "./client-calls";
-import { MessageAck } from "./MessageAck";
+import { MessageAck } from "./models";
 
 export const FormErrors: React.FunctionComponent<{ formErrors: Record<string, string> }> = ({ formErrors }) => (
   <div>
@@ -34,7 +34,7 @@ export const ProgressBar = ({ loading }: { loading: boolean }) =>
     </div>
   </div>
 
-export const ResponseDisplay = ({ responseMessage, responseError }: { responseMessage?: MessageAck, responseError: string }) => {
+export const ResponseDisplay = ({ responseMessage, responseError }: { responseMessage?: MessageAck, responseError?: string }) => {
   return <div className="row mt-3">
     <div className="col-sm-12">
       {responseMessage &&
@@ -68,26 +68,24 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
 interface CallState {
   payload: string;
   delay: number;
-  formErrors: { payload: string, delay: string };
+  responseCode: number;
+  formErrors: Record<string, string>
   loading: boolean;
-  payloadValid: boolean;
-  delayValid: boolean;
   formValid: boolean;
   responseMessage?: MessageAck;
-  responseError: string;
+  responseError?: string;
 }
 
 export const MainForm = ({ payload }: { payload: string }) => {
   const [callState, setCallState] = useState<CallState>({
     payload: "dummy payload",
     delay: 100,
-    formErrors: { payload: '', delay: '' },
+    responseCode: 200,
+    formErrors: {},
     loading: false,
-    payloadValid: true,
-    delayValid: true,
     formValid: true,
     responseMessage: undefined,
-    responseError: ""
+    responseError: undefined
   });
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -95,17 +93,15 @@ export const MainForm = ({ payload }: { payload: string }) => {
       e.preventDefault();
       return;
     }
-    setCallState(prevState => ({ ...prevState, responseError: "" }));
-    setCallState(prevState => ({ ...prevState, responseMessage: undefined }));
-
-    passthroughCallAndSetState(callState.payload, callState.delay);
+    setCallState(prevState => ({ ...prevState, responseError: undefined, responseMessage: undefined }));
+    passthroughCallAndSetState(callState.payload, callState.delay, callState.responseCode);
     e.preventDefault()
   }
 
-  const passthroughCallAndSetState = (payload: string, delay: number) => {
+  const passthroughCallAndSetState = (payload: string, delay: number, responseCode: number = 200) => {
     setCallState(prevState => ({ ...prevState, loading: true }));
     restCalls
-      .makePassthroughCall(payload, delay)
+      .makePassthroughCall({ payload: payload, delay: delay, responseCode: responseCode })
       .then(resp => {
         setCallState(prevState => ({ ...prevState, responseMessage: resp, loading: false }));
       }).catch(error => {
@@ -121,8 +117,8 @@ export const MainForm = ({ payload }: { payload: string }) => {
 
   const validateField = (fieldName: string, value: any) => {
     let fieldValidationErrors = callState.formErrors;
-    let payloadValid = callState.payloadValid;
-    let delayValid = callState.delayValid;
+    let payloadValid = true;
+    let delayValid = true;
 
     switch (fieldName) {
       case 'payload':
@@ -130,7 +126,7 @@ export const MainForm = ({ payload }: { payload: string }) => {
         fieldValidationErrors.payload = payloadValid ? '' : ' should have atleast 2 characters';
         break;
       case 'delay':
-        delayValid = !isNaN(value)
+        delayValid = !isNaN(value) && Number(value) > 0;
         fieldValidationErrors.delay = delayValid ? '' : ' is not valid';
         break;
       default:
@@ -140,16 +136,10 @@ export const MainForm = ({ payload }: { payload: string }) => {
       ...prevState,
       [fieldName]: value,
       formErrors: fieldValidationErrors,
-      payloadValid: payloadValid,
-      delayValid: delayValid
+      formValid: payloadValid && delayValid
     }));
-
-    validateForm()
   }
 
-  const validateForm = () => {
-    setCallState(prevState => ({ ...prevState, formValid: prevState.payloadValid && prevState.delayValid }));
-  }
   return (
     <div>
       <div className="row">
@@ -166,22 +156,30 @@ export const MainForm = ({ payload }: { payload: string }) => {
       <div className="row">
         <div className="col-sm-12">
           <form onSubmit={handleFormSubmit}>
-            <div className="form-group row">
+            <div className="form-group row mb-3">
               <label htmlFor="payload" className="col-sm-2 col-form-label">Payload</label>
               <div className="col-sm-10">
                 <textarea name="payload" className="form-control" placeholder="Payload"
                   onChange={handleUserInput} value={callState.payload}></textarea>
               </div>
             </div>
-            <div className="form-group row">
+            <div className="form-group row mb-3">
               <label htmlFor="delay" className="col-sm-2 col-form-label">Delay (in ms)</label>
               <div className="col-sm-10">
                 <input name="delay" type="number" className="form-control" placeholder="delay"
-                  value={callState.delay} onChange={(event) => handleUserInput(event)} />
+                  value={callState.delay} onChange={handleUserInput} />
 
               </div>
             </div>
-            <div className="form-group row">
+            <div className="form-group row mb-3">
+              <label htmlFor="delay" className="col-sm-2 col-form-label">Response Status Code</label>
+              <div className="col-sm-10">
+                <input name="responseCode" type="number" className="form-control" placeholder="status code"
+                  value={callState.responseCode} onChange={handleUserInput} />
+
+              </div>
+            </div>
+            <div className="form-group row mb-3">
               <div className="col-sm-10">
                 {!callState.loading &&
                   <button name="submit" className="btn btn-primary" disabled={!callState.formValid}>Submit</button>

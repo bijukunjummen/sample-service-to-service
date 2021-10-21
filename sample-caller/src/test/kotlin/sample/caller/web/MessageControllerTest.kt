@@ -28,23 +28,21 @@ class MessageControllerTest {
     @Test
     fun testCallToMessageEndpoint() {
         whenever(messageHandler.handle(any()))
-            .thenAnswer { invocation ->
-                val originalMessage: Message = invocation.getArgument<Message>(0)
-                Mono.just(MessageAck(id = originalMessage.id, received = originalMessage.payload, "ack"))
-            }
+                .thenAnswer { invocation ->
+                    val originalMessage: Message = invocation.getArgument<Message>(0)
+                    Mono.just(MessageAck(id = originalMessage.id, received = originalMessage.payload, "ack"))
+                }
         webTestClient.post().uri("/caller/messages")
-            .body(fromValue(Message("1", "one", 0)))
-            .exchange()
-            .expectStatus().isOk
-            .expectBody()
-            .json(
-                """ 
-                    | {
-                    |   "id": "1",
-                    |   "received": "one",
-                    |   "ack": "ack"
-                    | }
-                """.trimMargin()
-            )
+                .body(fromValue(Message("1", "one", 0)))
+                .exchange()
+                .expectStatus().isOk
+                .expectBody()
+                .json(""" 
+                | {
+                |   "id": "1",
+                |   "received": "one",
+                |   "ack": "ack"
+                | }
+                """.trimMargin())
     }
 }

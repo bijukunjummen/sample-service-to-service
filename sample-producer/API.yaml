@@ -35,13 +35,14 @@ components:
           example: an-id
         payload:
           type: string
-        throwException:
-          type: boolean
-          default: false
         delay:
           type: integer
           default: 0
           description: delay in milliseconds
+        responseCode:
+          type: integer
+          default: 200
+          description: response code to be plugged in by the producer
 
     MessageAck:
       type: object
