@@ -41,7 +41,7 @@ spec:
       serviceAccountName: sample-caller-sa
       containers:
         - name: sample-caller
-          image: us-west1-docker.pkg.dev/biju-altostrat-demo/sample-repo/sample-caller:latest
+          image: us-docker.pkg.dev/biju-altostrat-demo/docker-repo/sample-caller:250aab3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

@@ -41,7 +41,7 @@ spec:
       serviceAccountName: sample-producer-sa
       containers:
         - name: sample-producer
-          image: us-west1-docker.pkg.dev/biju-altostrat-demo/sample-repo/sample-producer:latest
+          image: us-docker.pkg.dev/biju-altostrat-demo/docker-repo/sample-producer:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

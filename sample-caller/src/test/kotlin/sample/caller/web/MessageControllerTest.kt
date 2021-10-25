@@ -29,8 +29,8 @@ class MessageControllerTest {
     fun testCallToMessageEndpoint() {
         whenever(messageHandler.handle(any()))
                 .thenAnswer { invocation ->
-                    val originalMessage: Message = invocation.getArgument<Message>(0)
-                    Mono.just(MessageAck(id = originalMessage.id, received = originalMessage.payload, "ack"))
+                    val originalMessage: Message = invocation.getArgument(0)
+                    Mono.just(MessageAck(id = originalMessage.id, received = originalMessage.payload, "ack", statusCode = 200, roundTripTimeMillis = 10L))
                 }
         webTestClient.post().uri("/caller/messages")
                 .body(fromValue(Message("1", "one", 0)))

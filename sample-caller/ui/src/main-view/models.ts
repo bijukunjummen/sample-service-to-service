@@ -1,7 +1,9 @@
 export interface MessageAck {
     id: string;
     received: string;
-    ack: string
+    ack: string;
+    statusCode: number;
+    roundTripTimeMillis: number;
 }
 
 

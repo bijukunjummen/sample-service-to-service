@@ -48,8 +48,16 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
             <span className="col-sm-4">{responseMessage.received}</span>
           </div>
           <div className="row">
-            <label htmlFor="acked" className="col-sm-2">Acked : </label>
+            <label htmlFor="ack" className="col-sm-2">Ack : </label>
             <span className="col-sm-4">{responseMessage.ack}</span>
+          </div>
+          <div className="row">
+            <label htmlFor="statusCode" className="col-sm-2">Status Code : </label>
+            <span className="col-sm-4">{responseMessage.statusCode}</span>
+          </div>
+           <div className="row">
+            <label htmlFor="roundTripTimeMillis" className="col-sm-2">Round Trip Time(millis): </label>
+            <span className="col-sm-4">{responseMessage.roundTripTimeMillis}</span>
           </div>
         </div>
       }
