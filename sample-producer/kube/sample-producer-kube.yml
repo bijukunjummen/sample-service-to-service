@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-producer
+  labels:
+    app: sample-producer
+    service: sample-producer
+spec:
+  ports:
+    - port: 8080
+      name: http
+  selector:
+    app: sample-producer
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sample-producer-sa
+  labels:
+    account: sample-producer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-producer-v1
+  labels:
+    app: sample-producer
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-producer
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: sample-producer
+        version: v1
+    spec:
+      serviceAccountName: sample-producer-sa
+      containers:
+        - name: sample-producer
+          image: us-west1-docker.pkg.dev/biju-altostrat-demo/sample-repo/sample-producer:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsUser: 1000
