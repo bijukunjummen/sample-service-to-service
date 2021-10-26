@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2beta16
+kind: Config
+metadata:
+  name: sample-caller
+build:
+  artifacts:
+    - image: sample-caller-image
+      jib:
+        type: gradle
+
+deploy:
+  kubectl:
+    manifests:
+      - kube/sample-caller-kube.yaml
+profiles:
+  - name: mesh
+    deploy:
+      kubectl:
+        manifests:
+          - kube/sample-caller-kube.yaml
+          - istio/sample-caller-destination-rule.yaml
+          - istio/sample-caller-gateway.yaml

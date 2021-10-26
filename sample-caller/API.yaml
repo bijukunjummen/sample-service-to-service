@@ -35,9 +35,6 @@ components:
           example: an-id
         payload:
           type: string
-        throwException:
-          type: boolean
-          default: false
         delay:
           type: integer
           default: 0
@@ -56,3 +53,9 @@ components:
           type: string
         ack:
           type: string
+        roundTripTimeMillis:
+          type: number
+          description: Round trip time in milliseconds
+        statusCode:
+          type: number
+          description: http status code of response from the producer
