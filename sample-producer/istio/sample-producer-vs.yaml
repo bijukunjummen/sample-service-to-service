@@ -4,7 +4,7 @@ metadata:
   name: sample-producer-route
 spec:
   hosts:
-    - "*"
+    - "sample-producer.istio-apps.svc.cluster.local"
   http:
     - timeout: 30s
       route:
