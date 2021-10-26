@@ -7,3 +7,8 @@ spec:
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL
+    connectionPool:
+    outlierDetection:
+      consecutive5xxErrors: 3
+      interval: 15s
+      baseEjectionTime: 15s
