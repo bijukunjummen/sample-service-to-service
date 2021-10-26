@@ -2,6 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: sample-producer-dl
+  namespace: istio-apps
 spec:
   host: sample-producer.istio-apps.svc.cluster.local
   trafficPolicy:
