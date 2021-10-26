@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-caller
+  labels:
+    app: sample-caller
+    service: sample-caller
+spec:
+  ports:
+    - port: 8080
+      name: http
+  selector:
+    app: sample-caller
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sample-caller-sa
+  labels:
+    account: sample-caller
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-caller-v1
+  labels:
+    app: sample-caller
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-caller
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: sample-caller
+        version: v1
+    spec:
+      serviceAccountName: sample-caller-sa
+      containers:
+        - name: sample-caller
+          image: us-docker.pkg.dev/biju-altostrat-demo/docker-repo/sample-caller:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsUser: 1000
