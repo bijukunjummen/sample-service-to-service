@@ -28,7 +28,7 @@ class MessageHandlerControllerTest {
                 | {
                 |   "id": "1",
                 |   "received": "one",
-                |   "ack": "ack"
+                |   "headers": {}
                 | }
                 """.trimMargin())
     }
