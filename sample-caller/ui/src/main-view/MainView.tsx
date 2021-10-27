@@ -41,23 +41,44 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
         <div className="alert alert-success">
           <div className="row">
             <label htmlFor="id" className="col-sm-2">Id : </label>
-            <span className="col-sm-4">{responseMessage.id}</span>
+            <span className="col-sm-8">{responseMessage.id}</span>
           </div>
           <div className="row">
             <label htmlFor="message" className="col-sm-2">Recieved : </label>
-            <span className="col-sm-4">{responseMessage.received}</span>
+            <span className="col-sm-8">{responseMessage.received}</span>
           </div>
           <div className="row">
-            <label htmlFor="ack" className="col-sm-2">Ack : </label>
-            <span className="col-sm-4">{responseMessage.ack}</span>
+            <label htmlFor="ack" className="col-sm-2">Caller Headers: </label>
+            <span className="col-sm-8">
+              <div>
+                {Object.entries(responseMessage.callerHeaders).map((value: [string, any], index: number) =>
+                  <div className="row" key={value[0]}>
+                    <label className="col-sm-4">{value[0]}</label><span className="col-sm-8">{value[1]}</span>
+                  </div>
+                )}
+              </div>
+            </span>
           </div>
+          <div className="row">
+            <label htmlFor="ack" className="col-sm-2">Producer Headers: </label>
+            <span className="col-sm-8">
+              <div>
+                {Object.entries(responseMessage.producerHeaders).map((value: [string, any], index: number) =>
+                  <div className="row" key={value[0]}>
+                    <label className="col-sm-4">{value[0]}</label><span className="col-sm-8">{value[1]}</span>
+                  </div>
+                )}
+              </div>
+            </span>
+          </div>
+
           <div className="row">
             <label htmlFor="statusCode" className="col-sm-2">Status Code : </label>
-            <span className="col-sm-4">{responseMessage.statusCode}</span>
+            <span className="col-sm-8">{responseMessage.statusCode}</span>
           </div>
-           <div className="row">
+          <div className="row">
             <label htmlFor="roundTripTimeMillis" className="col-sm-2">Round Trip Time(millis): </label>
-            <span className="col-sm-4">{responseMessage.roundTripTimeMillis}</span>
+            <span className="col-sm-8">{responseMessage.roundTripTimeMillis}</span>
           </div>
         </div>
       }
@@ -65,7 +86,7 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
       {responseError &&
         <div className="alert alert-warning">
           <div className="row">
-            <span className="col-sm-4">{responseError}</span>
+            <span className="col-sm-8">{responseError}</span>
           </div>
         </div>
       }

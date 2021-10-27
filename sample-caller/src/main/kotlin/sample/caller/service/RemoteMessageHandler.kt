@@ -1,6 +1,7 @@
 package sample.caller.service
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.util.StopWatch
@@ -19,7 +20,7 @@ class RemoteMessageHandler(
         private val webClientBuilder: WebClient.Builder,
         @Value("\${remote.base.url}") private val remoteBaseUrl: String
 ) : MessageHandler {
-    override fun handle(message: Message): Mono<MessageAck> {
+    override fun handle(message: Message, callerHeaders: HttpHeaders): Mono<MessageAck> {
         val webClient: WebClient = webClientBuilder.build()
         val uri: URI = UriComponentsBuilder
                 .fromHttpUrl("$remoteBaseUrl/producer/messages")
@@ -42,7 +43,8 @@ class RemoteMessageHandler(
                                         MessageAck(id = lite.id,
                                                 received = lite.received,
                                                 statusCode = response.rawStatusCode(),
-                                                ack = lite.ack,
+                                                producerHeaders = lite.headers,
+                                                callerHeaders = callerHeaders,
                                                 roundTripTimeMillis = roundTripTime)
                                     }
                         } else {
@@ -50,8 +52,9 @@ class RemoteMessageHandler(
                                     .bodyToMono<String>()
                                     .map { responseAsString ->
                                         MessageAck(id = message.id,
-                                                received = message.payload,
-                                                ack = "Raw Failed Message from Producer: $responseAsString",
+                                                received = "Raw Failed Message from Producer: $responseAsString",
+                                                producerHeaders = emptyMap(),
+                                                callerHeaders = callerHeaders,
                                                 statusCode = response.rawStatusCode(),
                                                 roundTripTimeMillis = roundTripTime)
                                     }

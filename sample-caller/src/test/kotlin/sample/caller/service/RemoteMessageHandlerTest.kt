@@ -1,8 +1,8 @@
 package sample.caller.service
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFunction
@@ -22,7 +22,7 @@ class RemoteMessageHandlerTest {
                  | {
                  |  "id": "123",
                  |  "received": "test",
-                 |  "ack": "ack"
+                 |  "headers": {}
                  | }
                 """.trimMargin().trimIndent())
                 .build()
@@ -32,7 +32,7 @@ class RemoteMessageHandlerTest {
         val webClientBuilder = WebClient.builder().exchangeFunction(shortCircuitingExchangeFunction)
         val remoteMessageHandler = RemoteMessageHandler(webClientBuilder, "http://someurl")
         StepVerifier
-                .create(remoteMessageHandler.handle(Message(id = "id", payload = "test", delay = 1L, responseCode = 200)))
+                .create(remoteMessageHandler.handle(Message(id = "id", payload = "test", delay = 1L, responseCode = 200), HttpHeaders()))
                 .assertNext { ack ->
                     assertThat(ack.id).isEqualTo("123")
                     assertThat(ack.statusCode).isEqualTo(200)
@@ -49,7 +49,7 @@ class RemoteMessageHandlerTest {
                  | {
                  |  "id": "123",
                  |  "received": "test",
-                 |  "ack": "ack"
+                 |  "headers":{}
                  | }
                 """.trimMargin().trimIndent())
                 .build()
@@ -59,12 +59,11 @@ class RemoteMessageHandlerTest {
         val webClientBuilder = WebClient.builder().exchangeFunction(shortCircuitingExchangeFunction)
         val remoteMessageHandler = RemoteMessageHandler(webClientBuilder, "http://someurl")
         StepVerifier
-                .create(remoteMessageHandler.handle(Message(id = "id", payload = "test", delay = 1L, responseCode = 500)))
+                .create(remoteMessageHandler.handle(Message(id = "id", payload = "test", delay = 1L, responseCode = 500), HttpHeaders()))
                 .assertNext { ack ->
                     assertThat(ack.id).isEqualTo("id")
                     assertThat(ack.statusCode).isEqualTo(500)
-                    assertThat(ack.received).isEqualTo("test")
-                    assertThat(ack.ack).startsWith("Raw Failed Message from Producer: ")
+                    assertThat(ack.received).startsWith("Raw Failed Message from Producer:")
                 }
                 .verifyComplete()
     }

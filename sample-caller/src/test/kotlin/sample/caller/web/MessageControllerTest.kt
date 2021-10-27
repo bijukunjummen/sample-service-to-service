@@ -7,6 +7,7 @@ import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.HttpHeaders
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters.fromValue
@@ -27,10 +28,15 @@ class MessageControllerTest {
 
     @Test
     fun testCallToMessageEndpoint() {
-        whenever(messageHandler.handle(any()))
+        whenever(messageHandler.handle(any(), any()))
                 .thenAnswer { invocation ->
                     val originalMessage: Message = invocation.getArgument(0)
-                    Mono.just(MessageAck(id = originalMessage.id, received = originalMessage.payload, "ack", statusCode = 200, roundTripTimeMillis = 10L))
+                    Mono.just(MessageAck(id = originalMessage.id,
+                            received = originalMessage.payload,
+                            callerHeaders = HttpHeaders(),
+                            producerHeaders = emptyMap(),
+                            statusCode = 200,
+                            roundTripTimeMillis = 10L))
                 }
         webTestClient.post().uri("/caller/messages")
                 .body(fromValue(Message("1", "one", 0)))
@@ -41,7 +47,10 @@ class MessageControllerTest {
                 | {
                 |   "id": "1",
                 |   "received": "one",
-                |   "ack": "ack"
+                |   "callerHeaders": {},
+                |   "producerHeaders": {},
+                |   "statusCode": 200,
+                |   "roundTripTimeMillis": 10
                 | }
                 """.trimMargin())
     }

@@ -3,6 +3,7 @@ package sample.producer.web
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.util.MultiValueMap
 import org.springframework.web.reactive.function.BodyInserters.fromValue
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
@@ -17,8 +18,9 @@ class MessageHandler {
     fun handleMessage(req: ServerRequest): Mono<ServerResponse> {
         return req.bodyToMono<Message>().flatMap { m ->
             LOGGER.info("Handling message: {}", m)
+            val httpHeaders: Map<String, List<String>> = req.headers().asHttpHeaders()
             Mono
-                    .fromCallable { MessageAck(id = m.id, received = m.payload, ack = "ack") }
+                    .fromCallable { MessageAck(id = m.id, received = m.payload, headers = httpHeaders) }
                     .delayElement(Duration.ofMillis(m.delay))
                     .flatMap { messageAck ->
                         ServerResponse

@@ -51,5 +51,7 @@ components:
           type: string
         received:
           type: string
-        ack:
-          type: string
+        headers:
+          $ref: '#/components/schemas/Headers'
+    Headers:
+      type: object

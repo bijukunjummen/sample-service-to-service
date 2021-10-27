@@ -51,11 +51,16 @@ components:
           type: string
         received:
           type: string
-        ack:
-          type: string
+        callerHeaders:
+          $ref: '#/components/schemas/Headers'
+        producerHeaders:
+          $ref: '#/components/schemas/Headers'
         roundTripTimeMillis:
           type: number
           description: Round trip time in milliseconds
         statusCode:
           type: number
           description: http status code of response from the producer
+
+    Headers:
+      type: object

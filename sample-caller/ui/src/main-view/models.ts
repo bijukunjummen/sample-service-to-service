@@ -1,7 +1,8 @@
 export interface MessageAck {
     id: string;
     received: string;
-    ack: string;
+    callerHeaders: Map<string, string[]>;
+    producerHeaders: Map<string, string[]>;
     statusCode: number;
     roundTripTimeMillis: number;
 }

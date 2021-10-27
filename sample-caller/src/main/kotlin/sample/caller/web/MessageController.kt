@@ -2,8 +2,10 @@ package sample.caller.web
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpHeaders
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 import sample.caller.model.Message
@@ -13,9 +15,9 @@ import sample.caller.service.MessageHandler
 @RestController
 class MessageController(private val messageHandler: MessageHandler) {
     @PostMapping("/caller/messages")
-    fun handle(@RequestBody message: Message): Mono<MessageAck> {
+    fun handle(@RequestBody message: Message, @RequestHeader callerHeaders: HttpHeaders): Mono<MessageAck> {
         LOGGER.info("Handling message {}", message)
-        return messageHandler.handle(message)
+        return messageHandler.handle(message, callerHeaders)
     }
 
     companion object {
