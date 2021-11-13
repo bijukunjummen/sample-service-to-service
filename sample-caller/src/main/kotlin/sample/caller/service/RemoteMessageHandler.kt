@@ -60,7 +60,22 @@ class RemoteMessageHandler(
                                     }
                         }
                     }
-                }.contextWrite { context ->
+                }
+                .onErrorResume { t ->
+                    Mono.deferContextual { contextView ->
+                        val stopWatch = contextView.get<StopWatch>(STOPWATCH_KEY)
+                        stopWatch.stop()
+                        val roundTripTime = stopWatch.totalTimeMillis
+                        Mono.just(
+                                MessageAck(id = message.id,
+                                        received = "Failed request: ${t.message}",
+                                        statusCode = 500,
+                                        producerHeaders = emptyMap(),
+                                        callerHeaders = callerHeaders,
+                                        roundTripTimeMillis = roundTripTime))
+                    }
+                }
+                .contextWrite { context ->
                     val stopWatch = StopWatch()
                     stopWatch.start()
                     context.put(STOPWATCH_KEY, stopWatch)
