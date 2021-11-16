@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono
 import sample.caller.model.Message
 import sample.caller.model.MessageAck
 import sample.caller.service.MessageHandler
+import sample.common.service.MetadataClient
 
 @ExtendWith(SpringExtension::class)
 @WebFluxTest(controllers = [MessageController::class])
@@ -26,8 +27,12 @@ class MessageControllerTest {
     @MockBean
     private lateinit var messageHandler: MessageHandler
 
+    @MockBean
+    private lateinit var metadataClient: MetadataClient
+
     @Test
     fun testCallToMessageEndpoint() {
+        whenever(metadataClient.getClusterInformation()).thenReturn(Mono.empty())
         whenever(messageHandler.handle(any(), any()))
                 .thenAnswer { invocation ->
                     val originalMessage: Message = invocation.getArgument(0)

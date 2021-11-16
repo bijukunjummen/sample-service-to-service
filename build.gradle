@@ -5,27 +5,19 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.spring' version '1.5.31' apply false
     id 'com.google.cloud.tools.jib' version '3.1.2' apply false
 }
-
 subprojects {
-    apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.plugin.spring'
-    apply plugin: 'com.google.cloud.tools.jib'
-    group = 'org.bk'
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '11'
 
     repositories {
         mavenCentral()
     }
 
+    group = 'org.bk'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-webflux")
-        implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-        implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-        implementation("org.jetbrains.kotlin:kotlin-reflect")
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
         testImplementation 'io.projectreactor:reactor-test'
@@ -46,9 +38,43 @@ subprojects {
             jvmTarget = "11"
         }
     }
+}
+configure([project(':sample-caller'), project(':sample-producer')]) {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'com.google.cloud.tools.jib'
+
+    dependencies {
+        implementation(project(":common"))
+    }
 
     bootRun {
         args = ["--spring.profiles.active=local"]
     }
 }
 
+
+configure([project(':common')]) {
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+    apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+    group = 'org.bk'
+    version = '0.0.1-SNAPSHOT'
+
+    dependencies {
+        api("org.springframework.boot:spring-boot-starter-webflux")
+        api("com.fasterxml.jackson.module:jackson-module-kotlin")
+        api("io.projectreactor.kotlin:reactor-kotlin-extensions")
+        api("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        api("org.jetbrains.kotlin:kotlin-reflect")
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+        testImplementation 'io.projectreactor:reactor-test'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+}

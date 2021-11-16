@@ -22,7 +22,8 @@ class RemoteMessageHandlerTest {
                  | {
                  |  "id": "123",
                  |  "received": "test",
-                 |  "headers": {}
+                 |  "headers": {},
+                 |  "metadata": {"clusterName": "test", "clusterLocation": "us-west1"}
                  | }
                 """.trimMargin().trimIndent())
                 .build()
@@ -36,6 +37,7 @@ class RemoteMessageHandlerTest {
                 .assertNext { ack ->
                     assertThat(ack.id).isEqualTo("123")
                     assertThat(ack.statusCode).isEqualTo(200)
+                    assertThat(ack.producerMetadata?.clusterName).isEqualTo("test")
                 }
                 .verifyComplete()
     }

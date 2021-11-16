@@ -1,3 +1,4 @@
 rootProject.name="sample-boot-knative"
 include 'sample-producer'
 include 'sample-caller'
+include 'common'

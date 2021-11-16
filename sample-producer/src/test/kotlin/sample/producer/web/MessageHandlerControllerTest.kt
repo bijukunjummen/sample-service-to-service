@@ -2,11 +2,15 @@ package sample.producer.web
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters.fromValue
+import reactor.core.publisher.Mono
+import sample.common.service.MetadataClient
 import sample.producer.config.RoutesConfig
 import sample.producer.model.Message
 
@@ -17,8 +21,12 @@ class MessageHandlerControllerTest {
     @Autowired
     private lateinit var webTestClient: WebTestClient
 
+    @MockBean
+    private lateinit var metadataClient: MetadataClient
+
     @Test
     fun `call to message endpoint`() {
+        whenever(metadataClient.getClusterInformation()).thenReturn(Mono.empty())
         webTestClient.post().uri("/producer/messages")
                 .body(fromValue(Message("1", "one", 0)))
                 .exchange()
@@ -35,6 +43,7 @@ class MessageHandlerControllerTest {
 
     @Test
     fun `should throw an exception if the payload flag is set`() {
+        whenever(metadataClient.getClusterInformation()).thenReturn(Mono.empty())
         webTestClient.post().uri("/producer/messages")
                 .body(fromValue(Message(
                         id = "1",

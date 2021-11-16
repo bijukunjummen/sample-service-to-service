@@ -45,6 +45,7 @@ class RemoteMessageHandler(
                                                 statusCode = response.rawStatusCode(),
                                                 producerHeaders = lite.headers,
                                                 callerHeaders = callerHeaders,
+                                                producerMetadata = lite.metadata,
                                                 roundTripTimeMillis = roundTripTime)
                                     }
                         } else {

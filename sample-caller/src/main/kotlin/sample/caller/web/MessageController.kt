@@ -11,13 +11,22 @@ import reactor.core.publisher.Mono
 import sample.caller.model.Message
 import sample.caller.model.MessageAck
 import sample.caller.service.MessageHandler
+import sample.common.service.ClusterMetadata
+import sample.common.service.MetadataClient
 
 @RestController
-class MessageController(private val messageHandler: MessageHandler) {
+class MessageController(private val messageHandler: MessageHandler, private val metadataClient: MetadataClient) {
     @PostMapping("/caller/messages")
     fun handle(@RequestBody message: Message, @RequestHeader callerHeaders: HttpHeaders): Mono<MessageAck> {
         LOGGER.info("Handling message {}", message)
         return messageHandler.handle(message, callerHeaders)
+                .flatMap { messageAck ->
+                    metadataClient.getClusterInformation()
+                            .switchIfEmpty(Mono.just(ClusterMetadata("", "")))
+                            .map { clusterData ->
+                                messageAck.copy(callerMetadata = clusterData)
+                            }
+                }
     }
 
     companion object {
