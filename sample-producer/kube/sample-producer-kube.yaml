@@ -47,3 +47,13 @@ spec:
             - containerPort: 8080
           securityContext:
             runAsUser: 1000
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
