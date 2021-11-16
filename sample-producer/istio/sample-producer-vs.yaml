@@ -7,7 +7,7 @@ spec:
   hosts:
     - "sample-producer.istio-apps.svc.cluster.local"
   http:
-    - timeout: 30s
+    - timeout: 5s
       route:
         - destination:
             host: sample-producer
