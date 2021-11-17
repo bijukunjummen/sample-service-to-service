@@ -53,57 +53,65 @@ export const ResponseDisplay = ({
                 <div className="row">
                     <label htmlFor="ack" className="col-sm-2">Caller Headers: </label>
                     <span className="col-sm-8">
-              <div>
-                {Object.entries(responseMessage.callerHeaders).map((value: [string, any], index: number) =>
-                    <div className="row" key={value[0]}>
-                        <label className="col-sm-4">{value[0]}</label><span className="col-sm-8">{value[1]}</span>
-                    </div>
-                )}
-              </div>
-            </span>
+                            <div>
+                                {responseMessage.callerHeaders &&
+                                Object.entries(responseMessage.callerHeaders).map((value: [string, any], index: number) =>
+                                    <div className="row" key={value[0]}>
+                                        <label className="col-sm-4">{value[0]}</label><span
+                                        className="col-sm-8">{value[1]}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </span>
                 </div>
                 <div className="row">
                     <label htmlFor="ack" className="col-sm-2">Producer Headers: </label>
                     <span className="col-sm-8">
-              <div>
-                {Object.entries(responseMessage.producerHeaders).map((value: [string, any], index: number) =>
-                    <div className="row" key={value[0]}>
-                        <label className="col-sm-4">{value[0]}</label><span className="col-sm-8">{value[1]}</span>
-                    </div>
-                )}
-              </div>
-            </span>
+                            <div>
+                                {responseMessage.producerHeaders &&
+                                Object.entries(responseMessage.producerHeaders).map((value: [string, any], index: number) =>
+                                    <div className="row" key={value[0]}>
+                                        <label className="col-sm-4">{value[0]}</label><span
+                                        className="col-sm-8">{value[1]}</span>
+                                    </div>
+                                )}
+                            </div>
+                        </span>
                 </div>
+                {responseMessage.callerMetadata &&
                 <div className="row">
                     <label htmlFor="ack" className="col-sm-2">Caller Metadata: </label>
                     <span className="col-sm-8">
-              <div>
-                    <div className="row">
-                      <label className="col-sm-4">Cluster Name</label><span
-                        className="col-sm-8">{responseMessage.callerMetadata.clusterName}</span>
-                    </div>
-                    <div className="row">
-                      <label className="col-sm-4">Cluster Location</label><span
-                        className="col-sm-8">{responseMessage.callerMetadata.clusterLocation}</span>
-                    </div>
-              </div>
-            </span>
+                            <div>
+                                <div className="row">
+                                    <label className="col-sm-4">Cluster Name</label><span
+                                    className="col-sm-8">{responseMessage.callerMetadata.clusterName}</span>
+                                </div>
+                                <div className="row">
+                                    <label className="col-sm-4">Cluster Location</label><span
+                                    className="col-sm-8">{responseMessage.callerMetadata.clusterLocation}</span>
+                                </div>
+                            </div>
+                        </span>
                 </div>
+                }
+                {responseMessage.producerMetadata &&
                 <div className="row">
                     <label htmlFor="ack" className="col-sm-2">Producer Metadata: </label>
                     <span className="col-sm-8">
-              <div>
-                    <div className="row">
-                      <label className="col-sm-4">Cluster Name</label><span
-                        className="col-sm-8">{responseMessage.producerMetadata.clusterName}</span>
-                    </div>
-                    <div className="row">
-                      <label className="col-sm-4">Cluster Location</label><span
-                        className="col-sm-8">{responseMessage.producerMetadata.clusterLocation}</span>
-                    </div>
-              </div>
-            </span>
+                            <div>
+                                <div className="row">
+                                    <label className="col-sm-4">Cluster Name</label><span
+                                    className="col-sm-8">{responseMessage.producerMetadata.clusterName}</span>
+                                </div>
+                                <div className="row">
+                                    <label className="col-sm-4">Cluster Location</label><span
+                                    className="col-sm-8">{responseMessage.producerMetadata.clusterLocation}</span>
+                                </div>
+                            </div>
+                        </span>
                 </div>
+                }
 
                 <div className="row">
                     <label htmlFor="statusCode" className="col-sm-2">Status Code : </label>
@@ -221,8 +229,8 @@ export const MainForm = ({payload}: { payload: string }) => {
                         <div className="form-group row mb-3">
                             <label htmlFor="payload" className="col-sm-2 col-form-label">Payload</label>
                             <div className="col-sm-10">
-                <textarea name="payload" className="form-control" placeholder="Payload"
-                          onChange={handleUserInput} value={callState.payload}></textarea>
+                                <textarea name="payload" className="form-control" placeholder="Payload"
+                                          onChange={handleUserInput} value={callState.payload}></textarea>
                             </div>
                         </div>
                         <div className="form-group row mb-3">
