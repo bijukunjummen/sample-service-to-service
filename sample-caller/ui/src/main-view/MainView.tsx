@@ -196,7 +196,7 @@ export const MainForm = ({payload}: { payload: string }) => {
                 fieldValidationErrors.payload = payloadValid ? '' : ' should have atleast 2 characters';
                 break;
             case 'delay':
-                delayValid = !isNaN(value) && Number(value) > 0;
+                delayValid = !isNaN(value) && Number(value) >= 0;
                 fieldValidationErrors.delay = delayValid ? '' : ' is not valid';
                 break;
             default:

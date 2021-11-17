@@ -47,6 +47,9 @@ spec:
             - containerPort: 8080
           securityContext:
             runAsUser: 1000
+          resources:
+            requests:
+              memory: "256Mi"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
