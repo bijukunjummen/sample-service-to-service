@@ -2,10 +2,10 @@
 
 A sample demonstrating service to service calls in a variety of scenarios:
 
-1. Cloud Run on GCP
-2. Kubernetes
-3. Istio
-4. KNative
+1. Kubernetes
+2. Istio (via Anthos service mesh), with services residing in a single cluster
+3. Istio (via Anthos service mesh), with services residing in different clusters
+4. Cloud Run
 
 ## Running it locally
 
