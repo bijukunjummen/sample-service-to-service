@@ -55,12 +55,22 @@ components:
           $ref: '#/components/schemas/Headers'
         producerHeaders:
           $ref: '#/components/schemas/Headers'
+        callerMetadata:
+          $ref: '#/components/schemas/ClusterMetadata'
+        producerMetadata:
+          $ref: '#/components/schemas/ClusterMetadata'
         roundTripTimeMillis:
           type: number
           description: Round trip time in milliseconds
         statusCode:
           type: number
           description: http status code of response from the producer
-
+    ClusterMetadata:
+      type: object
+      properties:
+        clusterName:
+          type: string
+        clusterLocation:
+          type: string
     Headers:
       type: object

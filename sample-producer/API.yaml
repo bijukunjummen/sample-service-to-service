@@ -53,5 +53,14 @@ components:
           type: string
         headers:
           $ref: '#/components/schemas/Headers'
+        metadata:
+          $ref: '#/components/schemas/ClusterMetadata'
+    ClusterMetadata:
+      type: object
+      properties:
+        clusterName:
+          type: string
+        clusterLocation:
+          type: string
     Headers:
       type: object

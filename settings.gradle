@@ -1,4 +1,4 @@
-rootProject.name="sample-boot-knative"
+rootProject.name="sample-service-to-service"
 include 'sample-producer'
 include 'sample-caller'
 include 'common'
