@@ -30,7 +30,7 @@ Start a client to the service:
 
 ## Testing
 
-A simple call to the Producer application:
+A call to the Producer application:
 
 ```shell
 curl -v -X "POST" "http://localhost:8080/producer/messages" \
@@ -38,13 +38,13 @@ curl -v -X "POST" "http://localhost:8080/producer/messages" \
      -H "Content-Type: application/json" \
      -d $'{
   "id": "1",
-  "payload": "one",
+  "payload": "test",
   "delay": "1000",
   "responseCode": 200
 }'
 ```
 
-A call to the caller, which in-turn dispatches to the producer:
+A call to the Caller, which in-turn dispatches to the Producer:
 
 ```shell
 curl -X "POST" "http://localhost:8081/caller/messages" \
@@ -52,7 +52,7 @@ curl -X "POST" "http://localhost:8081/caller/messages" \
      -H "Content-Type: application/json" \
      -d $'{
   "id": "1",
-  "payload": "one",
+  "payload": "test",
   "delay": "1000"
   "responseCode": 200
 }'
