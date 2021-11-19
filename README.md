@@ -1,11 +1,18 @@
 # Service to Service Call Demonstration
 
-A sample demonstrating service to service calls in a variety of scenarios:
+A sample demonstrating service to service call patterns in a variety of scenarios:
 
 1. [Kubernetes](https://bijukunjummen.medium.com/service-to-service-call-patterns-in-google-cloud-gke-243d94c73013)
 2. [Istio (via Anthos service mesh), with services residing in a single cluster](https://bijukunjummen.medium.com/service-to-service-call-patterns-gke-with-anthos-service-mesh-on-a-single-cluster-9c7d48d94c0b)
 3. Istio (via Anthos service mesh), with services residing in different clusters
 4. Cloud Run
+
+![](caller-producer.jpg)
+
+
+The "Producer" changes behavior based on the payload sent to it:
+1. A configurable delay can be added to the response
+2. A different response code can be added (say 5XX to simulate a server error)
 
 ## Running it locally
 
@@ -37,7 +44,7 @@ curl -v -X "POST" "http://localhost:8080/producer/messages" \
 }'
 ```
 
-A call to the caller, which inturn dispatches to the producer:
+A call to the caller, which in-turn dispatches to the producer:
 
 ```shell
 curl -X "POST" "http://localhost:8081/caller/messages" \
@@ -47,6 +54,7 @@ curl -X "POST" "http://localhost:8081/caller/messages" \
   "id": "1",
   "payload": "one",
   "delay": "1000"
+  "responseCode": 200
 }'
 ```
 
