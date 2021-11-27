@@ -1,5 +1,5 @@
 steps:
-  - name: openjdk:11
+  - name: openjdk:17
     id: test
     entrypoint: "/bin/bash"
     args:
