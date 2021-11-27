@@ -1,9 +1,8 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.5' apply false
+    id 'org.springframework.boot' version '2.6.0' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.5.31' apply false
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.5.31' apply false
-    id 'com.google.cloud.tools.jib' version '3.1.2' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.0' apply false
 }
 subprojects {
     apply plugin: 'io.spring.dependency-management'
@@ -16,7 +15,7 @@ subprojects {
 
     group = 'org.bk'
     version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
     dependencies {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
@@ -29,19 +28,18 @@ subprojects {
     compileKotlin {
         kotlinOptions {
             freeCompilerArgs = ["-Xjsr305=strict"]
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
     compileTestKotlin {
         kotlinOptions {
             freeCompilerArgs = ["-Xjsr305=strict"]
-            jvmTarget = "11"
+            jvmTarget = "17"
         }
     }
 }
 configure([project(':sample-caller'), project(':sample-producer')]) {
     apply plugin: 'org.springframework.boot'
-    apply plugin: 'com.google.cloud.tools.jib'
 
     dependencies {
         implementation(project(":common"))
