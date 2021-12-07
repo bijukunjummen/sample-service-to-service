@@ -27,3 +27,6 @@ out/
 .DS_Store
 zipkin.jar
 sample-caller/ui/node_modules
+
+.terraform
+.terraform.lock.hcl
