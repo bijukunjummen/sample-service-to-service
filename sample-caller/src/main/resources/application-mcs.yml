@@ -1,0 +1,20 @@
+---
+server:
+  port: 8080
+
+logging:
+  level:
+    root: info
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+remote:
+  base:
+    url: "http://sample-producer.svc.clusterset.local:8080"
