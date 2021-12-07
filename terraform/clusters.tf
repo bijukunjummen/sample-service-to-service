@@ -3,7 +3,7 @@ module "primary-cluster" {
   name                    = "primary"
   project_id              = module.project-services.project_id
   source                  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version                 = "13.0.0"
+  version                 = "17.3.0"
   regional                = false
   region                  = var.primary_region
   network                 = "default"
@@ -31,7 +31,7 @@ module "secondary-cluster" {
   name                    = "secondary"
   project_id              = module.project-services.project_id
   source                  = "terraform-google-modules/kubernetes-engine/google//modules/beta-public-cluster"
-  version                 = "13.0.0"
+  version                 = "17.3.0"
   regional                = false
   region                  = var.secondary_region
   network                 = "default"
