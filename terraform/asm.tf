@@ -5,9 +5,7 @@ module "asm-primary" {
   cluster_name     = module.primary-cluster.name
   location         = module.primary-cluster.location
   cluster_endpoint = module.primary-cluster.endpoint
-
-  asm_dir          = "asm-dir-${module.primary-cluster.name}"
-
+  outdir          = "asm-dir-${module.primary-cluster.name}"
 }
 
 module "asm-secondary" {
@@ -17,7 +15,5 @@ module "asm-secondary" {
   cluster_name     = module.secondary-cluster.name
   location         = module.secondary-cluster.location
   cluster_endpoint = module.secondary-cluster.endpoint
-
-  asm_dir = "asm-dir-${module.secondary-cluster.name}"
-
+  outdir = "asm-dir-${module.secondary-cluster.name}"
 }
