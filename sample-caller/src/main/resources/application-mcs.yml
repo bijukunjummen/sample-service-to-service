@@ -17,4 +17,4 @@ management:
 
 remote:
   base:
-    url: "http://sample-producer.svc.clusterset.local:8080"
+    url: "http://sample-producer.istio-apps.svc.clusterset.local:8080"
