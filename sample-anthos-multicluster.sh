@@ -24,14 +24,15 @@ gcloud container clusters create ${CLUSTER_2} \
     --num-nodes=2 \
     --workload-pool=${PROJECT_2}.svc.id.goog
 ## Download ASMCLI
-curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.11 > asmcli
-
+curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > asmcli
+chmod a+x asmcli
 ## Install Anthos service mesh on both clusters..
 ./asmcli install \
   --project_id ${PROJECT_1} \
   --cluster_name ${CLUSTER_1} \
   --cluster_location ${LOCATION_1} \
   --fleet_id ${PROJECT} \
+  --output_dir cluster1 \
   --enable_all  \
   --ca mesh_ca
 
@@ -40,6 +41,7 @@ curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.11 > asmcli
   --cluster_name ${CLUSTER_2} \
   --cluster_location ${LOCATION_2} \
   --fleet_id ${PROJECT} \
+  --output_dir cluster2  \
   --enable_all  \
   --ca mesh_ca
 
@@ -71,21 +73,19 @@ gcloud compute firewall-rules create anthos-multicluster-pods \
 ASM_REVISION=$(kubectl get deploy -n istio-system -l app=istiod -o jsonpath={.items[*].metadata.labels.'istio\.io\/rev'}'{"\n"}')
 
 # Tag the namespaces - Cluster 1
-kubectx gke_${PROJECT_1}_${LOCATION_1}_${CLUSTER_1}
-kubectl create namespace istio-apps
-kubectl label namespace istio-apps istio-injection- istio.io/rev=${ASM_REVISION} --overwrite
+kubectl --context=$CTX_1 create namespace istio-apps
+kubectl --context=$CTX_1 label namespace istio-apps istio-injection- istio.io/rev=${ASM_REVISION} --overwrite
 
-kubectl create namespace gw-namespace
-kubectl label namespace gw-namespace \
+kubectl --context=$CTX_1 create namespace gw-namespace
+kubectl --context=$CTX_1 label namespace gw-namespace \
   istio.io/rev=${ASM_REVISION} --overwrite
 
 # Install Ingress Gateway
 git clone https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git
 
-kubectl apply -n gw-namespace \
+kubectl --context=$CTX_1 apply -n gw-namespace \
   -f anthos-service-mesh-packages/samples/gateways/istio-ingressgateway
 
 # Tag the namespaces - Cluster 2
-kubectx gke_${PROJECT_2}_${LOCATION_2}_${CLUSTER_2}
-kubectl create namespace istio-apps
-kubectl label namespace istio-apps istio-injection- istio.io/rev=${ASM_REVISION} --overwrite
+kubectl --context=$CTX_2 create namespace istio-apps
+kubectl --context=$CTX_2 label namespace istio-apps istio-injection- istio.io/rev=${ASM_REVISION} --overwrite
