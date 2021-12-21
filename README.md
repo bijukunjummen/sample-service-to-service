@@ -4,7 +4,7 @@ A sample demonstrating service to service call patterns in a variety of scenario
 
 1. [Kubernetes](https://bijukunjummen.medium.com/service-to-service-call-patterns-in-google-cloud-gke-243d94c73013)
 2. [Istio (via Anthos service mesh) with services residing in a single cluster](https://bijukunjummen.medium.com/service-to-service-call-patterns-gke-with-anthos-service-mesh-on-a-single-cluster-9c7d48d94c0b)
-3. Istio (via Anthos service mesh) with services residing in different clusters - Coming soon
+3. [Istio (via Anthos service mesh) with services residing in different clusters](https://bijukunjummen.medium.com/service-to-service-call-patterns-multi-cluster-using-anthos-service-mesh-4b388a955c94)
 4. Cloud Run
 
 ![](caller-producer.jpg)
