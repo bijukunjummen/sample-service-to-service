@@ -8,6 +8,7 @@ export PROJECT_2=${PROJECT}
 export LOCATION_2=us-central1-a
 export CLUSTER_2=cluster2
 export CTX_2="gke_${PROJECT_2}_${LOCATION_2}_${CLUSTER_2}"
+
 gcloud container clusters create ${CLUSTER_1} \
     --project=${PROJECT_1} \
     --zone=${LOCATION_1} \

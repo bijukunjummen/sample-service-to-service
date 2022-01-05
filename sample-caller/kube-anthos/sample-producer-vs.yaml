@@ -5,9 +5,11 @@ metadata:
   namespace: istio-apps
 spec:
   hosts:
-    - "sample-producer.istio-apps.svc.clusterset.local"
+    - "sample-producer.istio-apps.svc.cluster.local"
   http:
     - timeout: 5s
       route:
         - destination:
-            host: sample-producer.istio-apps.svc.clusterset.local
+            host: sample-producer
+            port:
+              number: 8080
