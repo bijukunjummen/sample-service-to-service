@@ -1,0 +1,16 @@
+apiVersion: networking.gke.io/v1
+kind: MultiClusterService
+metadata:
+  name: sample-caller-mcs
+  namespace: istio-apps
+spec:
+  template:
+    spec:
+      selector:
+        app: sample-caller
+        version: v1
+      ports:
+        - name: web
+          protocol: TCP
+          port: 8080
+          targetPort: 8080

@@ -1,5 +1,12 @@
 # Based on https://cloud.google.com/service-mesh/docs/unified-install/gke-install-multi-cluster
 
+gcloud services enable \
+    anthos.googleapis.com \
+    multiclusteringress.googleapis.com \
+    gkehub.googleapis.com \
+    container.googleapis.com \
+    --project=${PROJECT}
+
 export PROJECT=$(gcloud config get-value project)
 export PROJECT_1=${PROJECT}
 export LOCATION_1=us-west1-a
@@ -7,7 +14,7 @@ export CLUSTER_1=cluster1
 export CTX_1="gke_${PROJECT_1}_${LOCATION_1}_${CLUSTER_1}"
 
 export PROJECT_2=${PROJECT}
-export LOCATION_2=us-central1-a
+export LOCATION_2=europe-north1-a
 export CLUSTER_2=cluster2
 export CTX_2="gke_${PROJECT_2}_${LOCATION_2}_${CLUSTER_2}"
 
@@ -70,6 +77,9 @@ gcloud compute firewall-rules create anthos-multicluster-pods \
     ${PROJECT_1}/${LOCATION_1}/${CLUSTER_1} \
     ${PROJECT_2}/${LOCATION_2}/${CLUSTER_2}
 
+gcloud beta container hub ingress enable \
+  --config-membership=cluster1
+
 
 # Find the right tag to apply
 # Determine the ASM revision
@@ -79,23 +89,7 @@ ASM_REVISION=$(kubectl get deploy -n istio-system -l app=istiod -o jsonpath={.it
 kubectl --context=$CTX_1 create namespace istio-apps
 kubectl --context=$CTX_1 label namespace istio-apps istio-injection- istio.io/rev=${ASM_REVISION} --overwrite
 
-kubectl --context=$CTX_1 create namespace gw-namespace
-kubectl --context=$CTX_1 label namespace gw-namespace \
-  istio.io/rev=${ASM_REVISION} --overwrite
-
-# Install Ingress Gateway
-git clone https://github.com/GoogleCloudPlatform/anthos-service-mesh-packages.git
-
-kubectl --context=$CTX_1 apply -n gw-namespace \
-  -f anthos-service-mesh-packages/samples/gateways/istio-ingressgateway
-
 # Tag the namespaces - Cluster 2
 kubectl --context=$CTX_2 create namespace istio-apps
 kubectl --context=$CTX_2 label namespace istio-apps istio-injection- istio.io/rev=${ASM_REVISION} --overwrite
 
-gcloud services enable \
-    anthos.googleapis.com \
-    multiclusteringress.googleapis.com \
-    gkehub.googleapis.com \
-    container.googleapis.com \
-    --project=${PROJECT}
