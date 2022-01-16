@@ -3,6 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.6.0' apply false
     id 'org.jetbrains.kotlin.plugin.spring' version '1.6.0' apply false
+    id 'com.google.cloud.tools.jib' version '3.1.4' apply false
 }
 subprojects {
     apply plugin: 'io.spring.dependency-management'
@@ -45,6 +46,7 @@ subprojects {
 }
 configure([project(':sample-caller'), project(':sample-producer')]) {
     apply plugin: 'org.springframework.boot'
+    apply plugin: 'com.google.cloud.tools.jib'
 
     dependencies {
         implementation(project(":common"))
@@ -60,8 +62,13 @@ configure([project(':sample-caller'), project(':sample-producer')]) {
     bootRun {
         args = ["--spring.profiles.active=local"]
     }
-    bootBuildImage {
-        tags = ["latest"]
+//    bootBuildImage {
+//        tags = ["latest"]
+//    }
+    jib {
+        from {
+            image = 'gcr.io/distroless/java17-debian11'
+        }
     }
 }
 
