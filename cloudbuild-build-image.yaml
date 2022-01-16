@@ -18,8 +18,8 @@ steps:
         set -x
         ./gradlew -p sample-caller jib --image=us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:$SHORT_SHA -Djib.to.tags="latest"
         ./gradlew -p sample-producer jib --image=us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:$SHORT_SHA -Djib.to.tags="latest"
-images:
-  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:$SHORT_SHA
-  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:latest
-  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:$SHORT_SHA
-  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:latest
+#images:
+#  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:$SHORT_SHA
+#  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:latest
+#  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:$SHORT_SHA
+#  - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:latest
