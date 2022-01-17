@@ -83,7 +83,7 @@ gcloud beta container hub ingress enable \
 
 # Find the right tag to apply
 # Determine the ASM revision
-ASM_REVISION=$(kubectl get deploy -n istio-system -l app=istiod -o jsonpath={.items[*].metadata.labels.'istio\.io\/rev'}'{"\n"}')
+ASM_REVISION=$(kubectl --context=$CTX_1 get deploy -n istio-system -l app=istiod -o jsonpath={.items[*].metadata.labels.'istio\.io\/rev'}'{"\n"}')
 
 # Tag the namespaces - Cluster 1
 kubectl --context=$CTX_1 create namespace istio-apps
