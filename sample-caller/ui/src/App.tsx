@@ -1,10 +1,10 @@
 import React from "react";
-import {BrowserRouter as Router, Link, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Link, Route} from "react-router-dom";
 import {MainForm} from "./main-view/MainView"
 
 
-const Root = () => (
-  <Router>
+const App = () => (
+  <BrowserRouter>
     <div>
       <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <Link to="/" className="navbar-brand">Service To Service Call Client</Link>
@@ -25,13 +25,15 @@ const Root = () => (
       <div className="containerFluid">
         <div className="row">
           <div className="col-sm-10 offset-sm-1">
-            <Route exact path="/" component={MainForm}/>
+            <Routes>
+            <Route path="/" element={<MainForm />}/>
+            </Routes>
           </div>
 
         </div>
       </div>
     </div>
-  </Router>
+    </BrowserRouter>
 );
 
-export default Root;
+export default App;

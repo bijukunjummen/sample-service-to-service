@@ -6,7 +6,7 @@ import {MainForm} from './MainView';
 describe("Main View of Client UI", () => {
 
   it('renders main view with Payload and Delay Form', () => {
-    render(<MainForm payload="test"/>);
+    render(<MainForm />);
 
     const payloadElement = screen.getByText("Payload");
     expect(payloadElement).toBeInTheDocument();

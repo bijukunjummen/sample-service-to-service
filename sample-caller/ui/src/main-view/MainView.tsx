@@ -143,7 +143,7 @@ interface CallState {
     responseError?: string;
 }
 
-export const MainForm = ({ payload }: { payload: string }) => {
+export const MainForm = () => {
     const [callState, setCallState] = useState<CallState>({
         payload: "dummy payload",
         delay: 100,
