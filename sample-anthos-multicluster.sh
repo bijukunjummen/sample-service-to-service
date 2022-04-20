@@ -27,7 +27,7 @@ gcloud container clusters create ${CLUSTER_2} \
     --num-nodes=2 \
     --workload-pool=${PROJECT_2}.svc.id.goog
 ## Download ASMCLI
-curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.12 > asmcli
+curl https://storage.googleapis.com/csm-artifacts/asm/asmcli_1.13 > asmcli
 chmod a+x asmcli
 ## Install Anthos service mesh on both clusters..
 ./asmcli install \
