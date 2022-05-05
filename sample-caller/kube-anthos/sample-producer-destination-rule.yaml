@@ -10,5 +10,6 @@ spec:
       mode: ISTIO_MUTUAL
     outlierDetection:
       consecutive5xxErrors: 3
-      interval: 15s
+      interval: 5s
       baseEjectionTime: 15s
+      maxEjectionPercent: 100

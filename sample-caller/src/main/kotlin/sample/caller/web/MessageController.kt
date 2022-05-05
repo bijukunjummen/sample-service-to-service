@@ -22,7 +22,7 @@ class MessageController(private val messageHandler: MessageHandler, private val 
         return messageHandler.handle(message, callerHeaders)
                 .flatMap { messageAck ->
                     metadataClient.getClusterInformation()
-                            .switchIfEmpty(Mono.just(ClusterMetadata("", "")))
+                            .switchIfEmpty(Mono.just(ClusterMetadata("", "", "")))
                             .map { clusterData ->
                                 messageAck.copy(callerMetadata = clusterData)
                             }

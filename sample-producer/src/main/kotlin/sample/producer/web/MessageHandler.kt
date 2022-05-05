@@ -21,18 +21,18 @@ class MessageHandler(private val metadataClient: MetadataClient) {
             LOGGER.info("Handling message: {}", m)
             val httpHeaders: Map<String, List<String>> = req.headers().asHttpHeaders()
             Mono
-                    .fromCallable { MessageAck(id = m.id, received = m.payload, headers = httpHeaders) }
-                    .delayElement(Duration.ofMillis(m.delay))
-                    .flatMap { messageAck ->
-                        metadataClient.getClusterInformation()
-                                .switchIfEmpty(Mono.just(ClusterMetadata("", "")))
-                                .flatMap { metadata ->
-                                    val withMetadata = messageAck.copy(metadata = metadata)
-                                    ServerResponse
-                                            .status(m.responseCode)
-                                            .body(fromValue(withMetadata))
-                                }
-                    }
+                .fromCallable { MessageAck(id = m.id, received = m.payload, headers = httpHeaders) }
+                .delayElement(Duration.ofMillis(m.delay))
+                .flatMap { messageAck ->
+                    metadataClient.getClusterInformation()
+                        .switchIfEmpty(Mono.just(ClusterMetadata("", "", "")))
+                        .flatMap { metadata ->
+                            val withMetadata = messageAck.copy(metadata = metadata)
+                            ServerResponse
+                                .status(m.responseCode)
+                                .body(fromValue(withMetadata))
+                        }
+                }
         }
     }
 

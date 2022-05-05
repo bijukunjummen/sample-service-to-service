@@ -19,4 +19,5 @@ export interface Message {
 export interface ClusterMetadata {
     clusterName: string;
     clusterLocation: string;
+    hostName: string;
 }

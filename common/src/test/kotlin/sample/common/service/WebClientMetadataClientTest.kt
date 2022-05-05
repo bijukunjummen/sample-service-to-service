@@ -13,16 +13,15 @@ class WebClientMetadataClientTest {
 
     @Test
     fun `retrieve metadata`() {
+        val metadataBody =
+            WebClientMetadataClientTest::class.java
+                .getResource("/sample-metadata-response.json")
+                .readText()
+        println(metadataBody)
         val clientResponse: ClientResponse = ClientResponse
                 .create(HttpStatus.OK)
                 .header("Content-Type", "application/json")
-                .body("""
-                | {
-                |    "clusterLocation":"us-west1-a",
-                |    "clusterName":"cluster1",
-                |    "clusterUid":"a7c67f3eeb0f4676b6da4d72489561016b918d768ebf4d878aebf909f5d5c5ac"
-                | } 
-                 """.trimMargin().trimIndent())
+                .body(metadataBody)
                 .build()
         val shortCircuitingExchangeFunction = ExchangeFunction {
             Mono.just(clientResponse)

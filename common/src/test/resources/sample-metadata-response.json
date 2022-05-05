@@ -1,0 +1,36 @@
+{
+  "instance": {
+    "attributes": {
+      "cluster-location": "us-west1-a",
+      "cluster-name": "cluster1",
+      "cluster-uid": "f639d547072742f6a99e27d69927c12f82f195b595ae4677ad35fea9cd4c6385"
+    },
+    "hostname": "gke-cluster1-default-pool-3265f192-h02l.us-west1-a.c.bk-anthos-demo.internal",
+    "id": 3508477088401472500,
+    "serviceAccounts": {
+      "bk-anthos-demo.svc.id.goog": {
+        "aliases": [
+          "default"
+        ],
+        "email": "bk-anthos-demo.svc.id.goog",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform"
+        ]
+      },
+      "default": {
+        "aliases": [
+          "default"
+        ],
+        "email": "bk-test-demo.svc.id.goog",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform"
+        ]
+      }
+    },
+    "zone": "projects/367221043078/zones/us-west1-a"
+  },
+  "project": {
+    "numericProjectId": 327221043078,
+    "projectId": "bk-demo-anthos-demo"
+  }
+}
