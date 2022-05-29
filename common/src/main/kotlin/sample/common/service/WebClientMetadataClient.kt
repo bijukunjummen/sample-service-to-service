@@ -13,32 +13,34 @@ class WebClientMetadataClient(private val webClientBuilder: WebClient.Builder) :
     override fun getClusterInformation(): Mono<ClusterMetadata> {
         return CachingUtils.ofMonoFixedKey(
             Duration.ofHours(2),
-            webClientBuilder.build()
-                .get()
-                .uri("http://metadata.google.internal/computeMetadata/v1/instance/attributes/?recursive=true")
-                .header("Metadata-Flavor", "Google")
-                .exchangeToMono { response ->
-                    if (response.statusCode().is2xxSuccessful) {
-                        response
-                            .bodyToMono<JsonNode>()
-                            .map { jsonNode ->
-                                val clusterLocation = jsonNode.at("/instance/attributes/cluster-location").asText()
-                                val clusterName = jsonNode.at("/instance/attributes/cluster-name").asText()
-                                val hostName = jsonNode.at("/instance/hostname").asText()
-                                ClusterMetadata(
-                                    clusterLocation = clusterLocation,
-                                    clusterName = clusterName,
-                                    hostName = hostName
-                                )
-                            }
-                    } else {
+            Mono.defer {
+                webClientBuilder.build()
+                    .get()
+                    .uri("http://metadata.google.internal/computeMetadata/v1/?recursive=true")
+                    .header("Metadata-Flavor", "Google")
+                    .exchangeToMono { response ->
+                        if (response.statusCode().is2xxSuccessful) {
+                            response
+                                .bodyToMono<JsonNode>()
+                                .map { jsonNode ->
+                                    val clusterLocation = jsonNode.at("/instance/attributes/cluster-location").asText()
+                                    val clusterName = jsonNode.at("/instance/attributes/cluster-name").asText()
+                                    val hostName = jsonNode.at("/instance/hostname").asText()
+                                    ClusterMetadata(
+                                        clusterLocation = clusterLocation,
+                                        clusterName = clusterName,
+                                        hostName = hostName
+                                    )
+                                }
+                        } else {
+                            Mono.empty()
+                        }
+                    }
+                    .onErrorResume { t ->
+                        LOGGER.error("Retrieving metadata failed", t)
                         Mono.empty()
                     }
-                }
-                .onErrorResume { t ->
-                    LOGGER.error("Retrieving metadata failed", t)
-                    Mono.empty()
-                }
+            }
         )
     }
 
