@@ -29,7 +29,8 @@ class WebClientMetadataClient(private val webClientBuilder: WebClient.Builder) :
                                     ClusterMetadata(
                                         clusterLocation = clusterLocation,
                                         clusterName = clusterName,
-                                        hostName = hostName
+                                        hostName = hostName,
+                                        ipAddress = InetLocalUtils.findFirstNonLoopbackAddress()?.toString() ?: ""
                                     )
                                 }
                         } else {

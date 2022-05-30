@@ -92,7 +92,10 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
                                         <label className="col-sm-4">Host Name</label><span
                                             className="col-sm-8">{responseMessage.callerMetadata.hostName}</span>
                                     </div>
-
+                                    <div className="row">
+                                        <label className="col-sm-4">Ip Address</label><span
+                                            className="col-sm-8">{responseMessage.callerMetadata.ipAddress}</span>
+                                    </div>
                                 </div>
                             </span>
                         </div>
@@ -111,9 +114,13 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
                                             className="col-sm-8">{responseMessage.producerMetadata.clusterLocation}</span>
                                     </div>
                                     <div className="row">
-                                        <label className="col-sm-4">Cluster Location</label><span
+                                        <label className="col-sm-4">Host Name</label><span
                                             className="col-sm-8">{responseMessage.producerMetadata.hostName}</span>
                                     </div>
+                                    <div className="row">
+                                        <label className="col-sm-4">Ip Address</label><span
+                                            className="col-sm-8">{responseMessage.producerMetadata.ipAddress}</span>
+                                    </div>                                    
                                 </div>
                             </span>
                         </div>
