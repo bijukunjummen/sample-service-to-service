@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono
 import sample.common.util.CachingUtils
 import java.time.Duration
 
-class WebClientMetadataClient(private val webClientBuilder: WebClient.Builder) : MetadataClient {
+class WebClientGcpMetadataClient(private val webClientBuilder: WebClient.Builder) : MetadataClient {
     override fun getClusterInformation(): Mono<ClusterMetadata> {
         return CachingUtils.ofMonoFixedKey(
             Duration.ofHours(2),
@@ -46,6 +46,6 @@ class WebClientMetadataClient(private val webClientBuilder: WebClient.Builder) :
     }
 
     companion object {
-        private val LOGGER: Logger = LoggerFactory.getLogger(WebClientMetadataClient::class.java)
+        private val LOGGER: Logger = LoggerFactory.getLogger(WebClientGcpMetadataClient::class.java)
     }
 }

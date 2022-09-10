@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.web.reactive.function.client.WebClient
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(WebClient.Builder::class)
 class ClusterMetadataAutoConfiguration {
 
@@ -15,7 +15,7 @@ class ClusterMetadataAutoConfiguration {
     @ConditionalOnMissingBean
     @Profile("!local")
     fun metadataClientOnGke(webClientBuilder: WebClient.Builder): MetadataClient {
-        return WebClientMetadataClient(webClientBuilder)
+        return WebClientGcpMetadataClient(webClientBuilder)
     }
 
     @Bean

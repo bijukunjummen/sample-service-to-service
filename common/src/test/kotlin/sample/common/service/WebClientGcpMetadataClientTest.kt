@@ -9,12 +9,12 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
-class WebClientMetadataClientTest {
+class WebClientGcpMetadataClientTest {
 
     @Test
     fun `retrieve metadata`() {
         val metadataBody =
-            WebClientMetadataClientTest::class.java
+            WebClientGcpMetadataClientTest::class.java
                 .getResource("/sample-metadata-response.json")
                 .readText()
         println(metadataBody)
@@ -27,9 +27,9 @@ class WebClientMetadataClientTest {
             Mono.just(clientResponse)
         }
         val webClientBuilder = WebClient.builder().exchangeFunction(shortCircuitingExchangeFunction)
-        val webClientMetadataClient = WebClientMetadataClient(webClientBuilder)
+        val webClientGcpMetadataClient = WebClientGcpMetadataClient(webClientBuilder)
         StepVerifier
-                .create(webClientMetadataClient.getClusterInformation())
+                .create(webClientGcpMetadataClient.getClusterInformation())
                 .assertNext { metadata ->
                     assertThat(metadata.clusterName).isEqualTo("cluster1")
                     assertThat(metadata.clusterLocation).isEqualTo("us-west1-a")
