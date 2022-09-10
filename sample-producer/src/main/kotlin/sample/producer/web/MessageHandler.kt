@@ -18,7 +18,7 @@ import java.time.Duration
 class MessageHandler(private val metadataClient: MetadataClient) {
     fun handleMessage(req: ServerRequest): Mono<ServerResponse> {
         return req.bodyToMono<Message>().flatMap { m ->
-            LOGGER.info("Handling message: {}", m)
+            LOGGER.info("Handling: {}", m)
             val httpHeaders: Map<String, List<String>> = req.headers().asHttpHeaders()
             Mono
                 .fromCallable { MessageAck(id = m.id, received = m.payload, headers = httpHeaders) }

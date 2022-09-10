@@ -53,7 +53,7 @@ curl -X "POST" "http://localhost:8081/caller/messages" \
      -d $'{
   "id": "1",
   "payload": "test",
-  "delay": "1000"
+  "delay": "1000",
   "responseCode": 200
 }'
 ```

@@ -41,7 +41,7 @@ spec:
       serviceAccountName: sample-producer-sa
       containers:
         - name: sample-producer
-          image: us-docker.pkg.dev/biju-altostrat-demo/docker-repo/sample-producer:latest
+          image: sample-producer-image
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -49,14 +49,17 @@ spec:
             runAsUser: 1000
           resources:
             requests:
-              memory: "256Mi"
+              memory: "512Mi"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            initialDelaySeconds: 3
-            periodSeconds: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 10
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
+            initialDelaySeconds: 30
+            failureThreshold: 10
