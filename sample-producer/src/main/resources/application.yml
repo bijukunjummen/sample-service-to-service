@@ -9,8 +9,10 @@ logging:
 management:
   endpoint:
     health:
+      enabled: true
       show-details: always
   endpoints:
+    enabled-by-default: false
     web:
       exposure:
         include: "*"
