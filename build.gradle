@@ -1,9 +1,9 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.3' apply false
-    id 'io.spring.dependency-management' version '1.0.13.RELEASE' apply false
+    id 'org.springframework.boot' version '3.0.0' apply false
+    id 'io.spring.dependency-management' version '1.1.0' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.6.21' apply false
     id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21' apply false
-    id 'com.google.cloud.tools.jib' version '3.1.4' apply false
+    id 'com.google.cloud.tools.jib' version '3.2.0' apply false
 }
 subprojects {
     apply plugin: 'io.spring.dependency-management'
@@ -11,7 +11,7 @@ subprojects {
     apply plugin: 'org.jetbrains.kotlin.plugin.spring'
 
     ext {
-        set('springCloudVersion', "2021.0.4")
+//        set('springCloudVersion', "2021.0.4")
     }
 
     repositories {
@@ -50,15 +50,15 @@ configure([project(':sample-caller'), project(':sample-producer')]) {
 
     dependencies {
         implementation(project(":common"))
-        implementation('org.springframework.cloud:spring-cloud-starter-sleuth')
         implementation('org.springframework.boot:spring-boot-starter-actuator')
+        implementation('io.micrometer:micrometer-tracing-bridge-otel')
     }
 
-    dependencyManagement {
-        imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-        }
-    }
+//    dependencyManagement {
+//        imports {
+//            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+//        }
+//    }
     bootRun {
         args = ["--spring.profiles.active=local"]
     }

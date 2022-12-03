@@ -7,6 +7,9 @@ logging:
     root: info
 
 management:
+  health:
+    probes:
+      enabled: true
   endpoint:
     health:
       enabled: true

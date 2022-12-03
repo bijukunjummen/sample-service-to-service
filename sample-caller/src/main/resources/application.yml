@@ -10,6 +10,9 @@ spring:
   main:
     lazy-initialization: true
 management:
+  health:
+    probes:
+      enabled: true
   endpoint:
     health:
       enabled: true

@@ -5,12 +5,12 @@ metadata:
 build:
   artifacts:
     - image: sample-caller-image
-      context: sample-caller
+#      context: sample-caller
       jib:
         type: gradle
         project: sample-caller
     - image: sample-producer-image
-      context: sample-producer
+#      context: sample-producer
       jib:
         type: gradle
         project: sample-producer
