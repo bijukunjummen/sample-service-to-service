@@ -9,7 +9,7 @@ steps:
         ./gradlew -p sample-caller check
         ./gradlew -p sample-producer check
 
-  - name: eclipse-temurin:17
+  - name: "us-west1-docker.pkg.dev/$PROJECT_ID/sample-repo/skaffold:latest"
     id: build-image
     entrypoint: "/bin/bash"
     args:
@@ -18,6 +18,16 @@ steps:
         set -x
         ./gradlew -p sample-caller jibDockerBuild --image=us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:$SHORT_SHA -Djib.to.tags="latest"
         ./gradlew -p sample-producer jibDockerBuild --image=us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:$SHORT_SHA -Djib.to.tags="latest"
+
+#  - name: eclipse-temurin:17
+#    id: build-image
+#    entrypoint: "/bin/bash"
+#    args:
+#      - '-c'
+#      - |-
+#        set -x
+#        ./gradlew -p sample-caller jibDockerBuild --image=us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:$SHORT_SHA -Djib.to.tags="latest"
+#        ./gradlew -p sample-producer jibDockerBuild --image=us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-producer:$SHORT_SHA -Djib.to.tags="latest"
 images:
   - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:$SHORT_SHA
   - us-docker.pkg.dev/$PROJECT_ID/docker-repo/sample-caller:latest
