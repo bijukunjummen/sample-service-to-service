@@ -2,7 +2,6 @@ apiVersion: networking.gke.io/v1
 kind: MultiClusterService
 metadata:
   name: sample-caller-mcs
-  namespace: istio-apps
 spec:
   template:
     spec:

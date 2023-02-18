@@ -2,9 +2,8 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: sample-caller-dl
-  namespace: istio-apps
 spec:
-  host: sample-caller.istio-apps.svc.cluster.local
+  host: sample-caller.default.svc.cluster.local
   trafficPolicy:
     tls:
       mode: ISTIO_MUTUAL

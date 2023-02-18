@@ -2,7 +2,6 @@ apiVersion: networking.gke.io/v1
 kind: MultiClusterIngress
 metadata:
   name: sample-caller-ingress
-  namespace: istio-apps
 spec:
   template:
     spec:

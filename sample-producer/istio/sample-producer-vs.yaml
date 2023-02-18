@@ -2,10 +2,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: sample-producer-route
-  namespace: istio-apps
 spec:
   hosts:
-    - "sample-producer.istio-apps.svc.cluster.local"
+    - "sample-producer.default.svc.cluster.local"
   http:
     - timeout: 5s
       route:
