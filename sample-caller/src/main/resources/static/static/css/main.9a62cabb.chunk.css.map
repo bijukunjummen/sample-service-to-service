@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,EACE,mCACF,CAEA,KACE,QAAS,CACT,kBACF","file":"main.9a62cabb.chunk.css","sourcesContent":["* {\n  font-family: 'Inconsolata', monospace;\n}\n\nbody {\n  margin: 0;\n  padding-top: 3.5rem;\n}\n"]}
