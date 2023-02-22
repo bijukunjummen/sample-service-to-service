@@ -26,11 +26,15 @@ class WebClientGcpMetadataClient(private val webClientBuilder: WebClient.Builder
                                     val clusterLocation = jsonNode.at("/instance/attributes/cluster-location").asText()
                                     val clusterName = jsonNode.at("/instance/attributes/cluster-name").asText()
                                     val hostName = jsonNode.at("/instance/hostname").asText()
+                                    val region = jsonNode.at("/instance/region").asText()
+                                    val zone = jsonNode.at("/instance/zone").asText()
                                     ClusterMetadata(
                                         clusterLocation = clusterLocation,
                                         clusterName = clusterName,
                                         hostName = hostName,
-                                        ipAddress = InetLocalUtils.findFirstNonLoopbackAddress()?.toString() ?: ""
+                                        ipAddress = InetLocalUtils.findFirstNonLoopbackAddress()?.toString() ?: "",
+                                        region = region,
+                                        zone = zone
                                     )
                                 }
                         } else {

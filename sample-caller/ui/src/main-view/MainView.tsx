@@ -96,6 +96,14 @@ export const ResponseDisplay = ({ responseMessage, responseError }: { responseMe
                                         <label className="col-sm-4">Ip Address</label><span
                                             className="col-sm-8">{responseMessage.callerMetadata.ipAddress}</span>
                                     </div>
+                                    <div className="row">
+                                        <label className="col-sm-4">Region</label><span
+                                            className="col-sm-8">{responseMessage.callerMetadata.region}</span>
+                                    </div>
+                                    <div className="row">
+                                        <label className="col-sm-4">Zone</label><span
+                                            className="col-sm-8">{responseMessage.callerMetadata.zone}</span>
+                                    </div>
                                 </div>
                             </span>
                         </div>

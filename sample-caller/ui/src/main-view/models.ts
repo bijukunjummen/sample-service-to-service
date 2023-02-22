@@ -21,4 +21,6 @@ export interface ClusterMetadata {
     clusterLocation: string;
     hostName: string;
     ipAddress: string;
+    region: string;
+    zone: string;
 }
