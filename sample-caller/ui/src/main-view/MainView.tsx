@@ -202,15 +202,16 @@ export const MainForm = () => {
     }
 
     const handleUserInput = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-        const name = e.target.name;
-        const value = e.target.value;
+        const name: string = e.target.name;
+        const value: string = e.target.value;
         validateField(name, value)
     }
 
     const validateField = (fieldName: string, value: any) => {
-        let fieldValidationErrors = callState.formErrors;
-        let payloadValid = true;
-        let delayValid = true;
+        let fieldValidationErrors: Record<string, string> = callState.formErrors;
+        let payloadValid: boolean = true;
+        let delayValid: boolean = true;
+        let responseCodeValid: boolean = true;
 
         switch (fieldName) {
             case 'payload':
@@ -221,6 +222,10 @@ export const MainForm = () => {
                 delayValid = !isNaN(value) && Number(value) >= 0;
                 fieldValidationErrors.delay = delayValid ? '' : ' is not valid';
                 break;
+            case 'responseCode':
+                responseCodeValid = !isNaN(value) && Number(value) >= 100 && Number(value) <= 599;
+                fieldValidationErrors.statusCode = responseCodeValid? '': ' is not valid';
+                break;
             default:
                 break;
         }
@@ -228,7 +233,7 @@ export const MainForm = () => {
             ...prevState,
             [fieldName]: value,
             formErrors: fieldValidationErrors,
-            formValid: payloadValid && delayValid
+            formValid: payloadValid && delayValid && responseCodeValid
         }));
     }
 
