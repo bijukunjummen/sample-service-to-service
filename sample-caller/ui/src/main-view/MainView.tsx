@@ -195,7 +195,8 @@ export const MainForm = () => {
             .makePassthroughCall({ payload: payload, delay: delay, responseCode: responseCode })
             .then(resp => {
                 setCallState(prevState => ({ ...prevState, responseMessage: resp, loading: false }));
-            }).catch(error => {
+            })
+            .catch(error => {
                 setCallState(prevState => ({ ...prevState, responseError: error.message, loading: false }));
             });
     }

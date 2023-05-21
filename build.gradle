@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id 'org.springframework.boot' version '3.0.0' apply false
+    id 'org.springframework.boot' version '3.1.0' apply false
     id 'io.spring.dependency-management' version '1.1.0' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.6.21' apply false
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.6.21' apply false
-    id 'com.google.cloud.tools.jib' version '3.2.0' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.8.21' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.8.21' apply false
+    id 'com.google.cloud.tools.jib' version '3.3.2' apply false
 }
 subprojects {
     apply plugin: 'io.spring.dependency-management'
@@ -19,11 +21,11 @@ subprojects {
     }
 
     group = 'org.bk'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.2-SNAPSHOT'
     sourceCompatibility = '17'
     dependencies {
         testImplementation('org.springframework.boot:spring-boot-starter-test')
-        testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
         testImplementation 'io.projectreactor:reactor-test'
     }
 
@@ -31,16 +33,10 @@ subprojects {
         useJUnitPlatform()
     }
 
-    compileKotlin {
+    tasks.withType(KotlinCompile) {
         kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
-            jvmTarget = "17"
-        }
-    }
-    compileTestKotlin {
-        kotlinOptions {
-            freeCompilerArgs = ["-Xjsr305=strict"]
-            jvmTarget = "17"
+            freeCompilerArgs = ['-Xjsr305=strict']
+            jvmTarget = '17'
         }
     }
 }
@@ -79,17 +75,17 @@ configure([project(':common')]) {
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.plugin.spring'
     group = 'org.bk'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.2-SNAPSHOT'
 
     dependencies {
         api("org.springframework.boot:spring-boot-starter-webflux")
         api("com.fasterxml.jackson.module:jackson-module-kotlin")
         api("io.projectreactor.kotlin:reactor-kotlin-extensions")
-        api("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+//        api("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         api("org.jetbrains.kotlin:kotlin-reflect")
-        implementation('com.github.ben-manes.caffeine:caffeine:3.1.0')
+        implementation('com.github.ben-manes.caffeine:caffeine:3.1.6')
         testImplementation('org.springframework.boot:spring-boot-starter-test')
-        testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
         testImplementation('io.projectreactor:reactor-test')
     }
 
