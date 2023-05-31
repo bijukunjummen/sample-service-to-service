@@ -81,7 +81,6 @@ configure([project(':common')]) {
         api("org.springframework.boot:spring-boot-starter-webflux")
         api("com.fasterxml.jackson.module:jackson-module-kotlin")
         api("io.projectreactor.kotlin:reactor-kotlin-extensions")
-//        api("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
         api("org.jetbrains.kotlin:kotlin-reflect")
         implementation('com.github.ben-manes.caffeine:caffeine:3.1.6')
         testImplementation('org.springframework.boot:spring-boot-starter-test')
