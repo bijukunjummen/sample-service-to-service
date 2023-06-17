@@ -193,7 +193,7 @@ export const MainForm = () => {
         setCallState(prevState => ({ ...prevState, loading: true }));
         restCalls
             .makePassthroughCall({ payload: payload, delay: delay, responseCode: responseCode })
-            .then(resp => {
+            .then((resp: MessageAck) => {
                 setCallState(prevState => ({ ...prevState, responseMessage: resp, loading: false }));
             })
             .catch(error => {

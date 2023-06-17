@@ -7,6 +7,6 @@ export function makePassthroughCall(message: Message): Promise<MessageAck> {
         method: "POST",
         body: JSON.stringify(message)
     })
-    .then((response: Response) =>  response.json())
+    .then((response: Response) =>  response.json() as unknown)
     .then((data) => data as MessageAck)
 }
