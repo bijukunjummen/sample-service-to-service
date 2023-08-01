@@ -17,70 +17,77 @@ import java.net.URI
 
 @Service
 class RemoteMessageHandler(
-        private val webClientBuilder: WebClient.Builder,
-        @Value("\${remote.base.url}") private val remoteBaseUrl: String
+    private val webClientBuilder: WebClient.Builder,
+    @Value("\${remote.base.url}") private val remoteBaseUrl: String
 ) : MessageHandler {
     override fun handle(message: Message, callerHeaders: HttpHeaders): Mono<MessageAck> {
         val webClient: WebClient = webClientBuilder.build()
         val uri: URI = UriComponentsBuilder
-                .fromHttpUrl("$remoteBaseUrl/producer/messages")
-                .build()
-                .toUri()
+            .fromHttpUrl("$remoteBaseUrl/producer/messages")
+            .build()
+            .toUri()
         return webClient.post()
-                .uri(uri)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(message))
-                .exchangeToMono { response ->
-                    Mono.deferContextual { contextView ->
-                        val stopWatch = contextView.get<StopWatch>(STOPWATCH_KEY)
-                        stopWatch.stop()
-                        val roundTripTime = stopWatch.totalTimeMillis
+            .uri(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .body(BodyInserters.fromValue(message))
+            .exchangeToMono { response ->
+                Mono.deferContextual { contextView ->
+                    val stopWatch = contextView.get<StopWatch>(STOPWATCH_KEY)
+                    stopWatch.stop()
+                    val roundTripTime = stopWatch.totalTimeMillis
 
-                        if (response.statusCode().is2xxSuccessful) {
-                            response
-                                    .bodyToMono<MessageAckLite>()
-                                    .map { lite ->
-                                        MessageAck(id = lite.id,
-                                                received = lite.received,
-                                                statusCode = response.rawStatusCode(),
-                                                producerHeaders = lite.headers,
-                                                callerHeaders = callerHeaders,
-                                                producerMetadata = lite.metadata,
-                                                roundTripTimeMillis = roundTripTime)
-                                    }
-                        } else {
-                            response
-                                    .bodyToMono<String>()
-                                    .map { responseAsString ->
-                                        MessageAck(id = message.id,
-                                                received = "Raw Failed Message from Producer: $responseAsString",
-                                                producerHeaders = emptyMap(),
-                                                callerHeaders = callerHeaders,
-                                                statusCode = response.rawStatusCode(),
-                                                roundTripTimeMillis = roundTripTime)
-                                    }
-                        }
+                    if (response.statusCode().is2xxSuccessful) {
+                        response
+                            .bodyToMono<MessageAckLite>()
+                            .map { lite ->
+                                MessageAck(
+                                    id = lite.id,
+                                    received = lite.received,
+                                    statusCode = response.statusCode().value(),
+                                    producerHeaders = lite.headers,
+                                    callerHeaders = callerHeaders,
+                                    producerMetadata = lite.metadata,
+                                    roundTripTimeMillis = roundTripTime
+                                )
+                            }
+                    } else {
+                        response
+                            .bodyToMono<String>()
+                            .map { responseAsString ->
+                                MessageAck(
+                                    id = message.id,
+                                    received = "Raw Failed Message from Producer: $responseAsString",
+                                    producerHeaders = emptyMap(),
+                                    callerHeaders = callerHeaders,
+                                    statusCode = response.statusCode().value(),
+                                    roundTripTimeMillis = roundTripTime
+                                )
+                            }
                     }
                 }
-                .onErrorResume { t ->
-                    Mono.deferContextual { contextView ->
-                        val stopWatch = contextView.get<StopWatch>(STOPWATCH_KEY)
-                        stopWatch.stop()
-                        val roundTripTime = stopWatch.totalTimeMillis
-                        Mono.just(
-                                MessageAck(id = message.id,
-                                        received = "Failed request: ${t.message}",
-                                        statusCode = 500,
-                                        producerHeaders = emptyMap(),
-                                        callerHeaders = callerHeaders,
-                                        roundTripTimeMillis = roundTripTime))
-                    }
+            }
+            .onErrorResume { t ->
+                Mono.deferContextual { contextView ->
+                    val stopWatch = contextView.get<StopWatch>(STOPWATCH_KEY)
+                    stopWatch.stop()
+                    val roundTripTime = stopWatch.totalTimeMillis
+                    Mono.just(
+                        MessageAck(
+                            id = message.id,
+                            received = "Failed request: ${t.message}",
+                            statusCode = 500,
+                            producerHeaders = emptyMap(),
+                            callerHeaders = callerHeaders,
+                            roundTripTimeMillis = roundTripTime
+                        )
+                    )
                 }
-                .contextWrite { context ->
-                    val stopWatch = StopWatch()
-                    stopWatch.start()
-                    context.put(STOPWATCH_KEY, stopWatch)
-                }
+            }
+            .contextWrite { context ->
+                val stopWatch = StopWatch()
+                stopWatch.start()
+                context.put(STOPWATCH_KEY, stopWatch)
+            }
     }
 
     companion object {

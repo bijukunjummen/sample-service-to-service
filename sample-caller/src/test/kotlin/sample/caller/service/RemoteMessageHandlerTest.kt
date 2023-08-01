@@ -16,57 +16,71 @@ class RemoteMessageHandlerTest {
     @Test
     fun `a clean flow`() {
         val clientResponse: ClientResponse = ClientResponse
-                .create(HttpStatus.OK)
-                .header("Content-Type", "application/json")
-                .body("""
+            .create(HttpStatus.OK)
+            .header("Content-Type", "application/json")
+            .body(
+                """
                  | {
                  |  "id": "123",
                  |  "received": "test",
                  |  "headers": {},
                  |  "metadata": {"clusterName": "test", "clusterLocation": "us-west1"}
                  | }
-                """.trimMargin().trimIndent())
-                .build()
+                """.trimMargin().trimIndent()
+            )
+            .build()
         val shortCircuitingExchangeFunction = ExchangeFunction {
             Mono.just(clientResponse)
         }
         val webClientBuilder = WebClient.builder().exchangeFunction(shortCircuitingExchangeFunction)
         val remoteMessageHandler = RemoteMessageHandler(webClientBuilder, "http://someurl")
         StepVerifier
-                .create(remoteMessageHandler.handle(Message(id = "id", payload = "test", delay = 1L, responseCode = 200), HttpHeaders()))
-                .assertNext { ack ->
-                    assertThat(ack.id).isEqualTo("123")
-                    assertThat(ack.statusCode).isEqualTo(200)
-                    assertThat(ack.producerMetadata?.clusterName).isEqualTo("test")
-                }
-                .verifyComplete()
+            .create(
+                remoteMessageHandler.handle(
+                    Message(id = "id", payload = "test", delay = 1L, responseCode = 200),
+                    HttpHeaders()
+                )
+            )
+            .assertNext { ack ->
+                assertThat(ack.id).isEqualTo("123")
+                assertThat(ack.statusCode).isEqualTo(200)
+                assertThat(ack.producerMetadata?.clusterName).isEqualTo("test")
+            }
+            .verifyComplete()
     }
 
     @Test
     fun `an error flow`() {
         val clientResponse: ClientResponse = ClientResponse
-                .create(HttpStatus.INTERNAL_SERVER_ERROR)
-                .header("Content-Type", "application/json")
-                .body("""
+            .create(HttpStatus.INTERNAL_SERVER_ERROR)
+            .header("Content-Type", "application/json")
+            .body(
+                """
                  | {
                  |  "id": "123",
                  |  "received": "test",
                  |  "headers":{}
                  | }
-                """.trimMargin().trimIndent())
-                .build()
+                """.trimMargin().trimIndent()
+            )
+            .build()
         val shortCircuitingExchangeFunction = ExchangeFunction {
             Mono.just(clientResponse)
         }
         val webClientBuilder = WebClient.builder().exchangeFunction(shortCircuitingExchangeFunction)
         val remoteMessageHandler = RemoteMessageHandler(webClientBuilder, "http://someurl")
         StepVerifier
-                .create(remoteMessageHandler.handle(Message(id = "id", payload = "test", delay = 1L, responseCode = 500), HttpHeaders()))
-                .assertNext { ack ->
-                    assertThat(ack.id).isEqualTo("id")
-                    assertThat(ack.statusCode).isEqualTo(500)
-                    assertThat(ack.received).startsWith("Raw Failed Message from Producer:")
-                }
-                .verifyComplete()
+            .create(
+                remoteMessageHandler.handle(
+                    Message(id = "id", payload = "test", delay = 1L, responseCode = 500),
+                    HttpHeaders()
+                )
+            )
+            .assertNext { ack ->
+                assertThat(ack.id).isEqualTo("id")
+                assertThat(ack.statusCode).isEqualTo(500)
+                assertThat(ack.received).startsWith("Raw Failed Message from Producer:")
+            }
+            .verifyComplete()
     }
 }

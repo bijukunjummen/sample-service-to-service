@@ -31,21 +31,26 @@ class MessageControllerTest {
     fun testCallToMessageEndpoint() {
         whenever(metadataClient.getClusterInformation()).thenReturn(Mono.empty())
         whenever(messageHandler.handle(any(), any()))
-                .thenAnswer { invocation ->
-                    val originalMessage: Message = invocation.getArgument(0)
-                    Mono.just(MessageAck(id = originalMessage.id,
-                            received = originalMessage.payload,
-                            callerHeaders = HttpHeaders(),
-                            producerHeaders = emptyMap(),
-                            statusCode = 200,
-                            roundTripTimeMillis = 10L))
-                }
+            .thenAnswer { invocation ->
+                val originalMessage: Message = invocation.getArgument(0)
+                Mono.just(
+                    MessageAck(
+                        id = originalMessage.id,
+                        received = originalMessage.payload,
+                        callerHeaders = HttpHeaders(),
+                        producerHeaders = emptyMap(),
+                        statusCode = 200,
+                        roundTripTimeMillis = 10L
+                    )
+                )
+            }
         webTestClient.post().uri("/caller/messages")
-                .body(fromValue(Message("1", "one", 0)))
-                .exchange()
-                .expectStatus().isOk
-                .expectBody()
-                .json(""" 
+            .body(fromValue(Message("1", "one", 0)))
+            .exchange()
+            .expectStatus().isOk
+            .expectBody()
+            .json(
+                """ 
                 | {
                 |   "id": "1",
                 |   "received": "one",
@@ -54,6 +59,7 @@ class MessageControllerTest {
                 |   "statusCode": 200,
                 |   "roundTripTimeMillis": 10
                 | }
-                """.trimMargin())
+                """.trimMargin()
+            )
     }
 }

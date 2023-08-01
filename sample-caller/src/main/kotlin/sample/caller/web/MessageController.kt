@@ -21,13 +21,13 @@ class MessageController(private val messageHandler: MessageHandler, private val 
     fun handle(@RequestBody message: Message, @RequestHeader callerHeaders: HttpHeaders): Mono<MessageAck> {
         LOGGER.info("Handling message {}", message)
         return messageHandler.handle(message, callerHeaders)
-                .flatMap { messageAck ->
-                    metadataClient.getClusterInformation()
-                            .switchIfEmpty(Mono.just(ClusterMetadata("", "", "")))
-                            .map { clusterData ->
-                                messageAck.copy(callerMetadata = clusterData)
-                            }
-                }
+            .flatMap { messageAck ->
+                metadataClient.getClusterInformation()
+                    .switchIfEmpty(Mono.just(ClusterMetadata("", "", "")))
+                    .map { clusterData ->
+                        messageAck.copy(callerMetadata = clusterData)
+                    }
+            }
     }
 
     companion object {
