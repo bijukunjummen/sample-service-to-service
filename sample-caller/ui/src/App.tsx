@@ -2,7 +2,7 @@ import React from "react";
 import {Link, Outlet} from "react-router-dom";
 
 
-const App = () => (
+const App: () => React.JSX.Element = () => (
     <div>
         <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <Link to="/" className="navbar-brand">Service To Service Call Client</Link>
