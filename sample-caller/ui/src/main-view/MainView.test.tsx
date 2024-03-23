@@ -1,12 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import renderer from 'react-test-renderer';
 import {MainForm} from './MainView';
 
 describe("Main View of Client UI", () => {
 
   it('renders main view with Payload and Delay Form', () => {
-    render(<MainForm />);
+    render(<MainForm payload={`dummy payload`}/>);
 
     const payloadElement = screen.getByText("Payload");
     expect(payloadElement).toBeInTheDocument();

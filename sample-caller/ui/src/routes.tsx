@@ -10,7 +10,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "",
-                element: <MainForm/>
+                element: <MainForm payload={`dummy payload`}/>
             },
             {
                 path: '/help',
