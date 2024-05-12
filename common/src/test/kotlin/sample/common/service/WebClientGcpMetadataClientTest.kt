@@ -17,7 +17,7 @@ class WebClientGcpMetadataClientTest {
             WebClientGcpMetadataClientTest::class.java
                 .getResource("/sample-metadata-response.json")
                 .readText()
-        println(metadataBody)
+//        println(metadataBody)
         val clientResponse: ClientResponse = ClientResponse
                 .create(HttpStatus.OK)
                 .header("Content-Type", "application/json")

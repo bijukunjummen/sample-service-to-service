@@ -13,14 +13,13 @@ class ClusterMetadataAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @Profile("!local")
+    @Profile("gcp")
     fun metadataClientOnGke(webClientBuilder: WebClient.Builder): MetadataClient {
         return WebClientGcpMetadataClient(webClientBuilder)
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @Profile("local")
     fun metadataClientLocal(): MetadataClient {
         return LocalMetadataClient()
     }

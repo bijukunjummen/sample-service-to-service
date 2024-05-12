@@ -1,16 +1,21 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id 'org.springframework.boot' version '3.2.0' apply false
+    id 'org.springframework.boot' version '3.2.5' apply false
     id 'io.spring.dependency-management' version '1.1.4' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.8.21' apply false
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.20' apply false
-    id 'com.google.cloud.tools.jib' version '3.3.2' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.9.23' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.23' apply false
+    id 'com.google.cloud.tools.jib' version '3.4.2' apply false
 }
+
 subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+
+    java {
+        sourceCompatibility = '21'
+    }
 
     ext {
 //        set('springCloudVersion', "2021.0.4")
@@ -18,6 +23,7 @@ subprojects {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     group = 'org.bk'
@@ -48,22 +54,15 @@ configure([project(':sample-caller'), project(':sample-producer')]) {
         implementation(project(":common"))
         implementation('org.springframework.boot:spring-boot-starter-actuator')
         implementation('io.micrometer:micrometer-tracing-bridge-otel')
+        runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     }
 
-//    dependencyManagement {
-//        imports {
-//            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-//        }
-//    }
     bootRun {
         args = ["--spring.profiles.active=local"]
     }
-//    bootBuildImage {
-//        tags = ["latest"]
-//    }
     jib {
         from {
-            image = 'gcr.io/distroless/java17-debian11'
+            image = 'cgr.dev/chainguard/jre:latest'
         }
     }
 }

@@ -31,8 +31,8 @@ class RemoteMessageHandler(
             .accept(MediaType.APPLICATION_JSON)
             .body(BodyInserters.fromValue(message))
             .exchangeToMono { response ->
-                Mono.deferContextual { contextView ->
-                    val stopWatch = contextView.get<StopWatch>(STOPWATCH_KEY)
+                Mono.deferContextual { context ->
+                    val stopWatch = context.get<StopWatch>(STOPWATCH_KEY)
                     stopWatch.stop()
                     val roundTripTime = stopWatch.totalTimeMillis
 
