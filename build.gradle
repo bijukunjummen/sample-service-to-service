@@ -23,7 +23,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        jcenter()
     }
 
     group = 'org.bk'

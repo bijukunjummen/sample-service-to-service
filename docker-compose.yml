@@ -1,0 +1,32 @@
+services:
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    volumes:
+      - ./monitor/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+      
+  grafana:
+    image: grafana/grafana:10.1.10
+    volumes:
+      - "./monitor/grafana-datasource.yml:/etc/grafana/provisioning/datasources/grafana-datasource.yml"
+      - "./monitor/producer-consumer-dashboard.json:/etc/grafana/dashboards/producer-consumer-dashboard.json"
+      - "./monitor/grafana-dashboard.yml:/etc/grafana/provisioning/dashboards/grafana-dashboard.yml"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus      
+
+  sample-caller:
+    image: "sample-caller:0.0.2-SNAPSHOT"
+    environment:
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "9080:8080"
+
+  sample-producer:
+    image: "sample-producer:0.0.2-SNAPSHOT"
+    environment:
+      SERVER_PORT: 8080
+      SPRING_PROFILES_ACTIVE: docker
