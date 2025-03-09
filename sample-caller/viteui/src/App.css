@@ -1,0 +1,9 @@
+/* Custom styles to complement Bootstrap */
+body {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+#root {
+  min-height: 100vh;
+}

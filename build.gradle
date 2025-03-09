@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-    id 'org.springframework.boot' version '3.2.5' apply false
-    id 'io.spring.dependency-management' version '1.1.4' apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.9.23' apply false
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.23' apply false
+    id 'org.springframework.boot' version '3.4.2' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.9.25' apply false
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25' apply false
     id 'com.google.cloud.tools.jib' version '3.4.2' apply false
 }
 
@@ -14,35 +12,37 @@ subprojects {
     apply plugin: 'org.jetbrains.kotlin.plugin.spring'
 
     java {
-        sourceCompatibility = '21'
-    }
-
-    ext {
-//        set('springCloudVersion', "2021.0.4")
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
     }
 
     repositories {
         mavenCentral()
-        jcenter()
     }
 
     group = 'org.bk'
     version = '0.0.2-SNAPSHOT'
     sourceCompatibility = '21'
     dependencies {
-        testImplementation('org.springframework.boot:spring-boot-starter-test')
-        testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.jetbrains.kotlin:kotlin-reflect'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
+        testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
         testImplementation 'io.projectreactor:reactor-test'
     }
 
-    test {
+    tasks.named('test') {
         useJUnitPlatform()
     }
 
-    tasks.withType(KotlinCompile) {
-        kotlinOptions {
-            freeCompilerArgs += '-Xjsr305=strict'
-            jvmTarget = '21'
+
+    kotlin {
+        compilerOptions {
+            freeCompilerArgs.addAll '-Xjsr305=strict'
         }
     }
 }
@@ -83,7 +83,7 @@ configure([project(':common')]) {
         api("org.jetbrains.kotlin:kotlin-reflect")
         implementation('com.github.ben-manes.caffeine:caffeine:3.1.6')
         testImplementation('org.springframework.boot:spring-boot-starter-test')
-        testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+        testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
         testImplementation('io.projectreactor:reactor-test')
     }
 
