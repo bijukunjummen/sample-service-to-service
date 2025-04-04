@@ -14,7 +14,6 @@ import sample.caller.model.Message
 import sample.caller.model.MessageAck
 import sample.caller.model.MessageAckLite
 import java.net.URI
-import java.time.Duration
 
 @Service
 class RemoteMessageHandler(
@@ -88,7 +87,6 @@ class RemoteMessageHandler(
                 stopWatch.start()
                 context.put(STOPWATCH_KEY, stopWatch)
             }
-            .timeout(Duration.ofSeconds(2))
     }
 
     companion object {
