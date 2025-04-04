@@ -14,6 +14,7 @@ import sample.caller.model.Message
 import sample.caller.model.MessageAck
 import sample.caller.model.MessageAckLite
 import java.net.URI
+import java.time.Duration
 
 @Service
 class RemoteMessageHandler(
@@ -23,7 +24,7 @@ class RemoteMessageHandler(
     override fun handle(message: Message, callerHeaders: HttpHeaders): Mono<MessageAck> {
         val webClient: WebClient = webClientBuilder.build()
         val uri: URI = UriComponentsBuilder
-            .fromHttpUrl("$remoteBaseUrl/producer/messages")
+            .fromUriString("$remoteBaseUrl/producer/messages")
             .build()
             .toUri()
         return webClient.post()
@@ -35,7 +36,6 @@ class RemoteMessageHandler(
                     val stopWatch = context.get<StopWatch>(STOPWATCH_KEY)
                     stopWatch.stop()
                     val roundTripTime = stopWatch.totalTimeMillis
-
                     if (response.statusCode().is2xxSuccessful) {
                         response
                             .bodyToMono<MessageAckLite>()
@@ -88,6 +88,7 @@ class RemoteMessageHandler(
                 stopWatch.start()
                 context.put(STOPWATCH_KEY, stopWatch)
             }
+            .timeout(Duration.ofSeconds(2))
     }
 
     companion object {

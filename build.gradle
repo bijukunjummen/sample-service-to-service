@@ -7,6 +7,9 @@ plugins {
 }
 
 subprojects {
+    ext {
+        resilience4jVersion = "2.2.0"
+    }
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'org.jetbrains.kotlin.plugin.spring'
@@ -27,6 +30,7 @@ subprojects {
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'org.jetbrains.kotlin:kotlin-reflect'
+        implementation("io.github.resilience4j:resilience4j-timelimiter:${property("resilience4jVersion")}")
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
         testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'

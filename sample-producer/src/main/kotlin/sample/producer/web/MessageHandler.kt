@@ -32,7 +32,9 @@ class MessageHandler(private val metadataClient: MetadataClient) {
                                 .status(m.responseCode)
                                 .body(fromValue(withMetadata))
                         }
-                }
+                }.doOnSuccess({
+                    LOGGER.info("Completed Handling: {}", m)
+                }).doOnError {t ->  LOGGER.error("Error Handling: {}", m, t) }
         }
     }
 
