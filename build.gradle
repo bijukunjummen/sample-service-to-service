@@ -66,6 +66,7 @@ configure([project(':common')]) {
 
     dependencies {
         api("org.springframework.boot:spring-boot-starter-webflux")
+        api("org.springframework.boot:spring-boot-starter-webclient")
         api("tools.jackson.core:jackson-databind")
         implementation('com.github.ben-manes.caffeine:caffeine:3.1.6')
         testImplementation('org.springframework.boot:spring-boot-starter-test')

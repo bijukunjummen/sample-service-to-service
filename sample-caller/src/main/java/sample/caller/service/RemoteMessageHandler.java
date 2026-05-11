@@ -47,7 +47,7 @@ public class RemoteMessageHandler implements MessageHandler {
                 .accept(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(message))
                 .exchangeToMono(response ->
-                        Mono.<MessageAck>deferContextual(context -> {
+                        Mono.deferContextual(context -> {
                             StopWatch stopWatch = context.get(STOPWATCH_KEY);
                             stopWatch.stop();
                             long roundTripTime = stopWatch.getTotalTimeMillis();
